@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Tip Calculator";
+    Layout = "_Layout";
+}
+
+<div class="text-start">
+    <h1 class="display-4 text-primary">Tip Calculator</h1>
+    <form asp-action="TipCalculator" method="post" class="container-fluid d-flex flex-column">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <p>Cost Of Meal: </p>
+            <input type="text" name="mealCost" style=" height: 25px; " value="@Model.MealCost">
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <p>15% Tip: </p>
+            <p class="mb-0">$@Model.Tip15.ToString("0.00")</p>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <p>20% Tip: </p>
+            <p class="mb-0">$@Model.Tip20.ToString("0.00")</p>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <p>25% Tip: </p>
+            <p class="mb-0">$@Model.Tip25.ToString("0.00")</p>
+        </div>
+
+        <div class="d-flex justify-content-start gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">Calculate</button>
+            <a href="@Url.Action("TipCalculator", "Home")" class="btn btn-secondary">Clear</a>
+        </div>
+    </form>
+</div>
