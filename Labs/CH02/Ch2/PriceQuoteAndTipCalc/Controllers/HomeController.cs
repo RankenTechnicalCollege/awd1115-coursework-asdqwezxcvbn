@@ -13,20 +13,42 @@ namespace PriceQuoteAndTipCalc.Controllers
             _logger = logger;
         }
 
-        public IActionResult PriceQuote(PriceQuote model)
+        [HttpGet]
+        public IActionResult PriceQuote()
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            return View(model);
+            return View(new PriceQuote());
         }
 
+        [HttpPost]
+        public IActionResult PriceQuote(PriceQuote model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult TipCalculator()
+        {
+            return View(new TipCalculator());
+        }
+
+        [HttpPost]
         public IActionResult TipCalculator(TipCalculator model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
                 return View(model);
-
-            return View(model);
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
     }

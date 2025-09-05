@@ -8,23 +8,23 @@
     <form asp-action="TipCalculator" method="post" class="container-fluid d-flex flex-column">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <p>Cost Of Meal: </p>
-            <input type="text" name="mealCost" style=" height: 25px; " value="@Model.MealCost">
+            <p class="form-label">Cost Of Meal: </p>
+            <input class="form-control w-50" type="text" name="mealCost" style=" height: 25px; " value="@Model.MealCost">
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <p>15% Tip: </p>
-            <p class="mb-0">$@Model.Tip15.ToString("0.00")</p>
+            <p class="form-label">15% Tip: </p>
+            <p class="form-label">$@Model.Tip15.ToString("0.00")</p>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <p>20% Tip: </p>
-            <p class="mb-0">$@Model.Tip20.ToString("0.00")</p>
+            <p class="form-label">20% Tip: </p>
+            <p class="form-label">$@Model.Tip20.ToString("0.00")</p>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <p>25% Tip: </p>
-            <p class="mb-0">$@Model.Tip25.ToString("0.00")</p>
+            <p class="form-label">25% Tip: </p>
+            <p class="form-label">$@Model.Tip25.ToString("0.00")</p>
         </div>
 
         <div class="d-flex justify-content-start gap-2 mt-3">
