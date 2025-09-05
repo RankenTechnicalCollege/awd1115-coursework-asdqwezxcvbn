@@ -13,20 +13,22 @@ namespace PriceQuotationStyling.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult PriceQuote()
         {
-            return View();
+            return View(new PriceQuote());
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public IActionResult PriceQuote(PriceQuote model)
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                return View(model);
+            }
         }
     }
 }

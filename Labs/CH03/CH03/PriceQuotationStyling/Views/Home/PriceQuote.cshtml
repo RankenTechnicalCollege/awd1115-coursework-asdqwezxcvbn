@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Price Quote";
+    Layout = "_Layout";
+
+}
+@model PriceQuotationStyling.Models.PriceQuote
+
+<div class="text-start">
+    <header>
+        <div class="mt-4 mb-4 p-3 bg-success text-white rounded text-center">
+            <h1><i class="fa-solid fa-money-bill-wave"></i> Price Quotation </h1>
+        </div>
+    </header>
+    <main>
+        <form asp-action="PriceQuote" method="post" class="container-fluid">
+
+            <div class="row mb-3">
+                <label class="col-md-3 col-form-label">Subtotal:</label>
+                <div class="col-md-4">
+                    <input asp-for="Subtotal" class="form-control" />
+                </div>
+                <div class="col-md-5 text-danger">
+                    <span asp-validation-for="Subtotal"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-3 col-form-label">Discount Percent:</label>
+                <div class="col-md-4">
+                    <input asp-for="DiscountPercent" class="form-control" />
+                </div>
+                <div class="col-md-5 text-danger">
+                    <span asp-validation-for="DiscountPercent"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-3 col-form-label">Discount Amount:</label>
+                <div class="col-md-4">
+                    <p class="form-control-plaintext">
+                        $@Model.DiscountAmount.ToString("0.00")
+                    </p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-3 col-form-label">Total:</label>
+                <div class="col-md-4">
+                    <p class="form-control-plaintext">
+                        $@Model.Total.ToString("0.00")
+                    </p>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-8 d-flex gap-3 justify-content-center">
+                    <button type="submit" class="btn btn-success">Calculate</button>
+                    <a href="@Url.Action("PriceQuote", "Home")" class="btn btn-success">Clear</a>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
