@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Distance Converter";
+    Layout = "_Layout";
+}
+@model HOT1_AWD1115.Models.DistanceConverter
+
+<div class="d-flex align-items-center justify-content-center m-5">
+    <div class="d-flex flex-column mb-3">
+        <h1>Distance Converter</h1>
+        <form asp-action="DistanceConverter" method="post">
+            <div class="form-floating mb-3">
+                <input asp-for="Inches" type="number" class="form-control" id="floatingInput" />
+                <label asp-for="Inches">Length in Inches</label>
+                <span asp-validation-for="Inches" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3">Calculate</button>
+
+            <label class="form-label d-block">@ViewBag.Centimeters</label>
+        </form>
+    </div>
+</div>
