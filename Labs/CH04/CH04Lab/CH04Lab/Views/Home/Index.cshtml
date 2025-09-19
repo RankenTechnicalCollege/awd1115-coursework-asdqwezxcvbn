@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+
+<div class="text-center bg-dark text-white p-3 mb-4">
+    <h2>Contact Manager</h2>
+</div>
+
+<div class="mb-3">
+    <a asp-action="Add" class="btn btn-link">Add Contact</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@contact.ContactId">
+                        @contact.FirstName
+                    </a>
+                </td>
+                <td>@contact.LastName</td>
+                <td>@contact.Phone</td>
+                <td>@contact.Email</td>
+                <td>@contact.Category?.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

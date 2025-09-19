@@ -1,0 +1,42 @@
+﻿@model CH04Lab.Models.Contact
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_Layout";
+}
+
+<div class="text-center bg-dark text-white p-3 mb-4">
+    <h2>Contact Manager</h2>
+</div>
+
+<h3>Contact Details</h3>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">First Name</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+
+            <dt class="col-sm-3">Last Name</dt>
+            <dd class="col-sm-9">@Model.LastName</dd>
+
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">@Model.Phone</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Category</dt>
+            <dd class="col-sm-9">@Model.Category?.Name</dd>
+
+            <dt class="col-sm-3">Date Added</dt>
+            <dd class="col-sm-9">@Model.DateAdded.ToShortDateString()</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a asp-action="Edit" asp-route-id="@Model.ContactId" class="btn btn-dark">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.ContactId" class="btn btn-dark">Delete</a>
+    <a asp-action="Index" class="btn btn-dark">Back to List</a>
+</div>
