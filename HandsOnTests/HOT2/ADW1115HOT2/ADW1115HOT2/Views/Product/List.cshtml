@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ADW1115HOT2.Models.Product>
+
+<h2>Product Manager</h2>
+<p><a class="btn btn-primary" asp-action="AddEdit">Add Product</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Short Desc</th>
+            <th>Long Desc</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Category</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.ProductName</td>
+                <td>@p.ProductDescShort</td>
+                <td>@p.ProductDescLong</td>
+                <td>@p.ProductImage</td>
+                <td>@p.ProductPrice</td>
+                <td>@p.ProductQty</td>
+                <td>@p.Category?.CategoryName</td>
+                <td><a asp-action="AddEdit" asp-route-id="@p.ProductID" class="btn btn-primary">Edit</a></td>
+                <td><a asp-action="Delete" asp-route-id="@p.ProductID" class="btn btn-primary">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
