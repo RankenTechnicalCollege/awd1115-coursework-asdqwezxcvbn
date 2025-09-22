@@ -1,0 +1,47 @@
+﻿@model AWD1115Final.Models.Job
+
+@{
+    ViewData["Title"] = "Add New Job";
+}
+
+<h2>Add New Job</h2>
+
+<form asp-action="Create" asp-controller="Jobs" method="post">
+    <div class="form-group mb-2">
+        <label asp-for="Name">Job Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Enter job name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="SkillLevel">Skill Level</label>
+        <input asp-for="SkillLevel" type="number" min="1" max="5" class="form-control" placeholder="1-5" />
+        <span asp-validation-for="SkillLevel" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="Priority">Priority</label>
+        <input asp-for="Priority" class="form-control" placeholder="Enter priority (Low, Medium, High)" />
+        <span asp-validation-for="Priority" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="AssignedMechanic">Assigned Mechanic</label>
+        <input asp-for="AssignedMechanic" class="form-control" placeholder="Enter mechanic name" />
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="CompletionTime">Completion Time (hours)</label>
+        <input asp-for="CompletionTime" type="number" step="0.01" class="form-control" placeholder="0.0" />
+    </div>
+
+    <div class="form-check mb-2">
+        <input asp-for="IsCompleted" class="form-check-input" type="checkbox" />
+        <label asp-for="IsCompleted" class="form-check-label">Completed</label>
+    </div>
+
+    <div class="form-group mt-2">
+        <input type="submit" value="Add Job" class="btn btn-success" />
+        <a asp-controller="Jobs" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

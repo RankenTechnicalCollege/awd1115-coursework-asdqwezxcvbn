@@ -1,0 +1,25 @@
+﻿@model IEnumerable<AWD1115Final.Models.Job>
+
+@{
+    ViewData["Title"] = "Job List";
+}
+
+<h2>Jobs Currently Available</h2>
+
+<a asp-controller="Jobs" asp-action="Create" class="btn btn-success mb-3">Add New Job</a>
+
+<ul class="list-group pb-3">
+    @foreach (var job in Model)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center mb-1">
+            <div>
+                <strong>@job.Name</strong>
+                (Skill Level: @job.SkillLevel, Priority: @job.Priority, Completed: @(job.IsCompleted ? "Yes" : "No"))
+            </div>
+            <div>
+                <a asp-action="Edit" asp-route-id="@job.JobId" class="btn btn-primary btn-sm">Edit</a>
+                <a asp-action="Delete" asp-route-id="@job.JobId" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+        </li>
+    }
+</ul>
