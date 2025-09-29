@@ -1,0 +1,65 @@
+﻿@model IEnumerable<CH06Lab.Models.Faq>
+@{
+    var topics = (List<CH06Lab.Models.Topic>)ViewData["Topics"];
+    var categories = (List<CH06Lab.Models.Category>)ViewData["Categories"];
+    var selectedTopic = (string?)ViewData["SelectedTopic"];
+    var selectedCategory = (string?)ViewData["SelectedCategory"];
+}
+
+<div class="bg-info text-white py-4 mb-4 text-center">
+    <h2>Frequently Asked Questions</h2>
+</div>
+
+
+<nav class="nav nav-pills mb-3 justify-content-center">
+    <a class="nav-link @(string.IsNullOrEmpty(selectedTopic) ? "active" : "")" href="/">All FAQs</a>
+    @foreach (var t in topics)
+    {
+        var topicUrl = string.IsNullOrEmpty(selectedCategory)
+        ? $"/topic/{t.Id.ToLower()}/"
+        : $"/topic/{t.Id.ToLower()}/category/{selectedCategory.ToLower()}/";
+
+        <a class="nav-link @(selectedTopic == t.Id ? "active" : "")" href="@topicUrl">@t.Name</a>
+    }
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action @(string.IsNullOrEmpty(selectedCategory) ? "active" : "")" href="/">All Categories</a>
+                @foreach (var c in categories)
+                {
+                    var catUrl = string.IsNullOrEmpty(selectedTopic)
+                    ? $"/category/{c.Id.ToLower()}/"
+                    : $"/topic/{selectedTopic.ToLower()}/category/{c.Id.ToLower()}/";
+
+                    <a class="list-group-item list-group-item-action @(selectedCategory == c.Id ? "active" : "")" href="@catUrl">@c.Name</a>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">No FAQs match the selected filters.</div>
+            }
+            else
+            {
+                <div class="list-group">
+                    @foreach (var faq in Model)
+                    {
+                        <div class="list-group-item">
+                            <h5 class="mb-1">@faq.Question</h5>
+                            <p class="mb-1">@faq.Answer</p>
+                            <small>
+                                Topic: @faq.Topic?.Name &nbsp;&nbsp;
+                                Category: @faq.Category?.Name
+                            </small>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
