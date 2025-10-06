@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header {
+    <h1>Help Section</h1>
+}
+
+<div class="container mt-4">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+               asp-area="Help" asp-controller="Home" asp-action="Index">Help Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tutorial" ? "active" : "")"
+               asp-area="Help" asp-controller="Tutorial" asp-action="Index" asp-route-id="Page1">Tutorial</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        @RenderBody()
+    </div>
+</div>
