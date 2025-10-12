@@ -1,0 +1,38 @@
+﻿@model TripLog.ViewModels.TripPage1ViewModel
+
+@{
+    ViewBag.Title = "Add Trip - Page 1";
+}
+
+<h3>Add Trip Destination and Dates</h3>
+
+<form asp-action="AddPage1" method="post" novalidate>
+    <div class="mb-3">
+        <label asp-for="Destination" class="form-label"></label>
+        <input asp-for="Destination" class="form-control" />
+        <span asp-validation-for="Destination" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Accommodation" class="form-label"></label>
+        <input asp-for="Accommodation" class="form-control" />
+        <span asp-validation-for="Accommodation" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" name="action" value="Next" class="btn btn-primary">Next</button>
+    <button type="submit" name="action" value="Cancel" class="btn btn-secondary">Cancel</button>
+</form>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")

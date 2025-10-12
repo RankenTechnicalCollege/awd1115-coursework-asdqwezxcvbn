@@ -1,0 +1,29 @@
+﻿@model TripLog.ViewModels.TripPage3ViewModel
+
+@{
+    ViewBag.Title = "Add Trip - Page 3";
+}
+
+<h3>Add Things To Do in @ViewBag.SubHeader</h3>
+
+<form asp-action="AddPage3" method="post" novalidate>
+    <div class="mb-3">
+        <label asp-for="Activity1" class="form-label">Activity 1</label>
+        <input asp-for="Activity1" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Activity2" class="form-label">Activity 2</label>
+        <input asp-for="Activity2" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Activity3" class="form-label">Activity 3</label>
+        <input asp-for="Activity3" class="form-control" />
+    </div>
+
+    <button type="submit" name="action" value="Save" class="btn btn-dark">Save</button>
+    <button type="submit" name="action" value="Cancel" class="btn btn-secondary">Cancel</button>
+</form>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")
