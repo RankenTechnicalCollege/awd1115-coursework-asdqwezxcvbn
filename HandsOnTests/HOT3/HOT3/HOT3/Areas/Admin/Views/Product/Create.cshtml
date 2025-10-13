@@ -1,0 +1,49 @@
+﻿@model HOT3.Models.Product
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create Product";
+}
+
+<h1>Create Product</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Slug (optional)</label>
+        <input asp-for="Slug" class="form-control" />
+        <span asp-validation-for="Slug" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Image file name</label>
+        <input asp-for="ImageFileName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Category</label>
+        <input asp-for="Category" class="form-control" />
+        <span asp-validation-for="Category" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Manufacturer</label>
+        <input asp-for="Manufacturer" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Stock</label>
+        <input asp-for="Stock" class="form-control" type="number" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Price</label>
+        <input asp-for="Price" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Price" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-primary">Create</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>
