@@ -34,6 +34,7 @@ namespace AWD1115Final.Controllers
             {
                 _context.Add(job);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Job created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(job);
@@ -61,6 +62,7 @@ namespace AWD1115Final.Controllers
                 {
                     _context.Update(job);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Job updated successfully!";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -94,6 +96,7 @@ namespace AWD1115Final.Controllers
             {
                 _context.Jobs.Remove(job);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Job deleted successfully!";
             }
             return RedirectToAction(nameof(Index));
         }

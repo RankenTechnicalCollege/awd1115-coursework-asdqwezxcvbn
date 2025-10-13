@@ -4,6 +4,13 @@
     ViewData["Title"] = "Job List";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 <h2>Jobs Currently Available</h2>
 
 <a asp-controller="Jobs" asp-action="Create" class="btn btn-success mb-3">Add New Job</a>
