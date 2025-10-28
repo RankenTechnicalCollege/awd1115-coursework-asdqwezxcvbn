@@ -1,0 +1,65 @@
+﻿@CarInventorySystem_HostAddress = https://localhost:7101
+
+GET {{CarInventorySystem_HostAddress}}/cars
+Content-Type: application/json
+{
+  "make": "Toyota",
+  "model": "Camry",
+  "isavailable": true,
+  "secret": "Sensitive Info Goes In Here"
+}
+###
+
+POST {{CarInventorySystem_HostAddress}}/cars
+Content-Type: application/json
+{
+  "make": "Toyota",
+  "model": "Camry",
+  "isavailable": true,
+  "secret": "Sensitive Info Goes In Here"
+}
+###
+
+POST {{CarInventorySystem_HostAddress}}/cars
+Content-Type: application/json
+{
+  "make": "Toyota",
+  "model": "Camry",
+  "isavailable": false,
+  "secret": "Sensitive Info Goes In Here"
+}
+###
+
+POST {{CarInventorySystem_HostAddress}}/cars
+Content-Type: application/json
+{
+  "make": "Toyota",
+  "model": "Camry",
+  "isavailable": true,
+  "secret": "Sensitive Info Goes In Here"
+}
+###
+
+POST {{CarInventorySystem_HostAddress}}/cars
+Content-Type: application/json
+{
+  "make": "Toyota",
+  "model": "Camry",
+  "isavailable": true,
+  "secret": "Sensitive Info Goes In Here"
+}
+###
+
+PUT {{CarInventorySystem_HostAddress}}/cars
+Content-Type: application/json
+{
+  "make": "Tesla",
+  "model": "Model Y", 
+  "isavailable": true,
+  "secret": "Sensitive Info Goes In Here"
+}
+###
+
+GET {{CarInventorySystem_HostAddress}}/cars/available
+
+###
