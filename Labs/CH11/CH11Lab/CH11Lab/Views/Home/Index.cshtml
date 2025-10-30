@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CH11Lab.Models.Sale>
+@{
+    ViewBag.Title = "Quarterly Sales";
+    var employees = ViewBag.Employees as List<CH11Lab.Models.Employee> ?? new List<CH11Lab.Models.Employee>();
+    int selectedEmployeeId = ViewBag.SelectedEmployeeId ?? 0;
+    decimal totalSales = ViewBag.TotalSales ?? 0m;
+}
+
+<h2>Quarterly Sales</h2>
+
+<form method="get" class="row g-3 align-items-center mb-3">
+    <div class="col-auto">
+        <label class="form-label">Employee</label><br />
+        <select name="employeeId" class="form-select" style="width:250px;">
+            <option value="0">All Employees</option>
+            @foreach (var e in employees)
+            {
+                <option value="@e.EmployeeId" selected="@(e.EmployeeId == selectedEmployeeId ? "selected" : null)"> @e.FirstName @e.LastName </option>
+            }
+        </select>
+    </div>
+    <div class="col-auto align-self-end">
+        <button class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Year</th>
+            <th>Quarter</th>
+            <th>Employee</th>
+            <th class="text-end">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Year</td>
+                <td>@s.Quarter</td>
+                <td>@(s.Employee != null ? $"{s.Employee.FirstName} {s.Employee.LastName}" : "—")</td>
+                <td class="text-end">@s.Amount.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"><strong>Total Sales</strong></td>
+            <td class="text-end"><strong>@totalSales.ToString("C")</strong></td>
+        </tr>
+    </tfoot>
+</table>

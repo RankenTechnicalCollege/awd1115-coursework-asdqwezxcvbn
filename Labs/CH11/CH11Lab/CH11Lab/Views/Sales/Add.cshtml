@@ -1,0 +1,52 @@
+﻿@model CH11Lab.Models.Sale
+@{
+    ViewBag.Title = "Add Sales";
+    var employees = ViewBag.Employees as List<CH11Lab.Models.Employee> ?? new List<CH11Lab.Models.Employee>();
+}
+
+<h2>Add Sales</h2>
+
+<form asp-action="Add" method="post" class="row g-3">
+    <div class="col-md-2">
+        <label asp-for="Quarter" class="form-label"></label>
+        <input asp-for="Quarter" class="form-control" />
+        <span asp-validation-for="Quarter" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-2">
+        <label asp-for="Year" class="form-label"></label>
+        <input asp-for="Year" class="form-control" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="Amount" class="form-label"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-5">
+        <label asp-for="EmployeeId" class="form-label"></label>
+        <select asp-for="EmployeeId" class="form-select">
+            <option value="">-- Select Employee --</option>
+            @foreach (var e in employees)
+            {
+                <option value="@e.EmployeeId">@e.FirstName @e.LastName</option>
+            }
+        </select>
+        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <span asp-validation-summary="ModelOnly" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Add</button>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
