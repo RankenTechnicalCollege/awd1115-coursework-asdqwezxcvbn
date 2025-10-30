@@ -6,11 +6,11 @@ namespace ToDoApp.Models
     {
         public ToDoContext(DbContextOptions<ToDoContext> options) : base(options) { }
 
-        public DbSet<ToDo> ToDos { get; set; } = null;
+        public DbSet<ToDo> ToDos { get; set; } = null!;
 
-        public DbSet<Category> Categories { get; set; } = null;
+        public DbSet<Category> Categories { get; set; } = null!;
 
-        public DbSet<Status> Statuses { get; set; } = null;
+        public DbSet<Status> Statuses { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualBasic;
-
-namespace ToDoApp.Models
+﻿namespace ToDoApp.Models
 {
     public class Filters
     {
-        public Filters(string filterstring) {
+        public Filters(string filterstring)
+        {
             FilterString = filterstring ?? "all-all-all";
             string[] filters = FilterString.Split('-');
             CategoryId = filters[0];
