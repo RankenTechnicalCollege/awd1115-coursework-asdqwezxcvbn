@@ -11,7 +11,7 @@ namespace ToDoApp.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Please Enter A Due Date")]
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
 
         [Required(ErrorMessage = "Please Select A Category")]
         public string CategoryId { get; set; }
