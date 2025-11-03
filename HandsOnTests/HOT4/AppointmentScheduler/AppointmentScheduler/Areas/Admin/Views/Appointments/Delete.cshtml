@@ -1,0 +1,20 @@
+﻿@model AppointmentScheduler.Models.Appointment
+@{
+    ViewData["Title"] = "Delete Appointment";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<h1>Delete Appointment</h1>
+
+<dl class="row">
+    <dt class="col-sm-2">Start</dt>
+    <dd class="col-sm-10">@Model.StartDateTime.ToString("g")</dd>
+
+    <dt class="col-sm-2">Customer</dt>
+    <dd class="col-sm-10">@Model.Customer?.Username</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a class="btn btn-secondary" href="/Admin/Appointments">Cancel</a>
+</form>

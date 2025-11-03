@@ -1,0 +1,62 @@
+﻿@model IEnumerable<AppointmentScheduler.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Admin - Appointments";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center text-primary">Admin - Appointments</h1>
+
+    <div class="text-end mb-3">
+        <!-- This one goes OUTSIDE the Admin area -->
+        <a asp-area="" asp-controller="Appointments" asp-action="Create" class="btn btn-success">
+            <i class="fa-solid fa-plus-circle"></i> Create New Appointment
+        </a>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No appointments found. Create one using the button above.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered shadow-sm">
+                <thead class="table-light">
+                    <tr class="text-center">
+                        <th>Start Date/Time</th>
+                        <th>End Date/Time</th>
+                        <th>Customer</th>
+                        <th style="width: 220px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var endTime = item.StartDateTime.AddHours(1);
+                        <tr>
+                            <td>@item.StartDateTime.ToString("g")</td>
+                            <td>@endTime.ToString("g")</td>
+                            <td>@item.Customer?.Username</td>
+                            <td class="text-center">
+                                <a asp-area="Admin" asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </a>
+                                <a asp-area="Admin" asp-controller="Appointments" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1 text-white">
+                                    <i class="fa-solid fa-eye"></i> Details
+                                </a>
+                                <a asp-area="Admin" asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+</div>

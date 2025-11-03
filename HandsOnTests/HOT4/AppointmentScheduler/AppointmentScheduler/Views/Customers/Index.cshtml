@@ -1,0 +1,27 @@
+﻿@model IEnumerable<AppointmentScheduler.Models.Customer>
+@{
+    ViewData["Title"] = "Customers";
+}
+<h1>Customers</h1>
+
+<p>
+    <a class="btn btn-primary" href="/Customers/Create">Create Customer</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Username</td>
+                <td>@c.Phone</td>
+            </tr>
+        }
+    </tbody>
+</table>

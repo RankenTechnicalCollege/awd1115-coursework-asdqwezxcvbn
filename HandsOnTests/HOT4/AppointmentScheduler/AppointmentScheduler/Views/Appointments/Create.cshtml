@@ -1,0 +1,27 @@
+﻿@model AppointmentScheduler.Models.Appointment
+@{
+    ViewData["Title"] = "Create Appointment";
+}
+<h1>Create Appointment</h1>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="CustomerId" class="form-label"></label>
+        <select asp-for="CustomerId" class="form-select" asp-items="@(ViewData["CustomerId"] as SelectList)"></select>
+        <span asp-validation-for="CustomerId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartDateTime" class="form-label"></label>
+        <input asp-for="StartDateTime" class="form-control" type="datetime-local" />
+        <span asp-validation-for="StartDateTime" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
