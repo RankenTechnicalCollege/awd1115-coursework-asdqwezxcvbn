@@ -19,7 +19,7 @@ namespace ToDoApp.Controllers
 
             ViewBag.Categories = context.Categories.ToList();
             ViewBag.Statuses = context.Statuses.ToList();
-            ViewBag.DueFilterValues = Filters.DueFilterValues;
+            ViewBag.DueFilters = Filters.DueFilterValues;
 
             IQueryable<ToDo> query = context.ToDos
                 .Include(t => t.Category)
