@@ -1,0 +1,11 @@
+﻿@model CH08Lab.Models.Trip
+
+<h3>Delete Trip</h3>
+
+<p>Are you sure you want to delete the trip to <strong>@Model.Destination.Name</strong>?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="TripId" />
+    <button type="submit" class="btn btn-danger me-2">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

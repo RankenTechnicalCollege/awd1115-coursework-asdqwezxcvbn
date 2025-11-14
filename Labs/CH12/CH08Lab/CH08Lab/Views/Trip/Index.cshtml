@@ -1,0 +1,67 @@
+﻿@using CH08Lab.Models
+@model IEnumerable<Trip>
+
+@{
+    ViewBag.Title = "Home";
+}
+
+<p>
+    <a class="btn btn-link" asp-action="AddPage1">Add Trip</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>No trips yet.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Destination</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Accommodations</th>
+                <th>Things To Do</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@t.Destination</td>
+                    <td>@t.StartDate.ToString("M/d/yyyy")</td>
+                    <td>@t.EndDate.ToString("M/d/yyyy")</td>
+                    <td>
+                        <strong>@t.Accommodation</strong><br />
+                        @if (!string.IsNullOrEmpty(t.AccommodationPhone))
+                        {
+                            <div>Phone: @t.AccommodationPhone</div>
+                        }
+                        @if (!string.IsNullOrEmpty(t.AccommodationEmail))
+                        {
+                            <div>Email: @t.AccommodationEmail</div>
+                        }
+                    </td>
+                    <td>
+                        @if (t.Activities != null && t.Activities.Any())
+                        {
+                            foreach (var activity in t.Activities)
+                            {
+                                <div>@activity.Name</div>
+                            }
+                        }
+                        else
+                        {
+                            <div>No activities</div>
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@t.TripId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

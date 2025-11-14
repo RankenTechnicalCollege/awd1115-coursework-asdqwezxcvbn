@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CH08Lab.Models.Destination>
+
+@{
+    ViewBag.Title = "Manage Destinations";
+}
+
+<h3>Manage Destinations</h3>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form asp-action="AddDestination" method="post" class="mb-3">
+    <input type="text" name="name" placeholder="New destination" class="form-control d-inline-block w-50" />
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.Name</td>
+                <td>
+                    <form asp-action="DeleteDestination" method="post">
+                        <input type="hidden" name="id" value="@d.DestinationId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

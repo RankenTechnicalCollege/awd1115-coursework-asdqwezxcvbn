@@ -1,0 +1,20 @@
+﻿@model CH08Lab.Models.TripPage3ViewModel
+
+@{
+    ViewBag.Title = "Add Trip - Page 3";
+}
+
+<h3>Add Things To Do in @ViewBag.SubHeader</h3>
+
+<form asp-action="AddPage3" method="post" novalidate>
+    <div class="mb-3">
+        <label asp-for="SelectedActivityIds" class="form-label">Activities</label>
+        <select asp-for="SelectedActivityIds" asp-items="@(new MultiSelectList(Model.Activities, "ActivityId", "Name"))" multiple class="form-control">
+        </select>
+    </div>
+
+    <button type="submit" name="action" value="Save" class="btn btn-dark">Save</button>
+    <button type="submit" name="action" value="Cancel" class="btn btn-secondary">Cancel</button>
+</form>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")

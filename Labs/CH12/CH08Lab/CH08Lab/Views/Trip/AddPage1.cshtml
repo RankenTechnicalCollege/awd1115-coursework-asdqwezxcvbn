@@ -1,0 +1,45 @@
+﻿@using CH08Lab.Models
+@model TripPage1ViewModel
+
+@{
+    ViewBag.Title = "Add Trip - Page 1";
+}
+
+<h3>Add Trip Destination and Dates</h3>
+
+<form asp-action="AddPage1" method="post" novalidate>
+    <div class="mb-3">
+        <label asp-for="DestinationId" class="form-label">Destination:</label>
+        <select asp-for="DestinationId" class="form-control"
+                asp-items="@(new SelectList(Model.Destinations, "DestinationId", "Name"))">
+            <option value="">-- Select Destination --</option>
+        </select>
+        <span asp-validation-for="DestinationId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AccommodationId" class="form-label">Accommodation:</label>
+        <select asp-for="AccommodationId" class="form-control"
+                asp-items="@(new SelectList(Model.Accommodations, "AccommodationId", "Name"))">
+            <option value="">-- Select Accommodation --</option>
+        </select>
+        <span asp-validation-for="AccommodationId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label">Start Date:</label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label">End Date:</label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" name="action" value="Next" class="btn btn-primary">Next</button>
+    <button type="submit" name="action" value="Cancel" class="btn btn-secondary">Cancel</button>
+</form>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<CH08Lab.Models.Activity>
+
+@{
+    ViewBag.Title = "Manage Activities";
+}
+
+<h3>Manage Activities</h3>
+
+<form asp-action="AddActivity" method="post" class="mb-3">
+    <input type="text" name="name" placeholder="New activity" class="form-control d-inline-block w-50" />
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.Name</td>
+                <td>
+                    <form asp-action="DeleteActivity" method="post">
+                        <input type="hidden" name="id" value="@a.ActivityId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
