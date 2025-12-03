@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AWD1115Final.Models.Job>
+﻿@model IEnumerable<S3FinalV2.Models.Jobs>
 
 @{
     ViewData["Title"] = "Job List";
@@ -21,7 +21,7 @@
         <li class="list-group-item d-flex justify-content-between align-items-center mb-1">
             <div>
                 <strong>@job.Name</strong>
-                (Skill Level: @job.SkillLevel, Priority: @job.Priority, Completed: @(job.IsCompleted ? "Yes" : "No"))
+                (Skill Level: @job.SkillLevel, Description: @job.Description, Estimated Completion Time: @job.EstCompTime, Priority: @job.Priority, )
             </div>
             <div>
                 <a asp-action="Edit" asp-route-id="@job.JobId" class="btn btn-primary btn-sm">Edit</a>

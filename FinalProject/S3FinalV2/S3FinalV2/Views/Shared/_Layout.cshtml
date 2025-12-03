@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+@{
     var year = DateTime.Now.Year;
 }
 <!DOCTYPE html>
@@ -18,6 +21,11 @@
 <body style="font-family:'Inter', sans-serif;">
     <header>
         <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
+            @{
+                var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+                var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+            }
+
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/MechTrackLogos/MechTrackLogoRFB.png" alt="MechTrack Logo" width="65" class="img-fluid me-2" />
@@ -28,21 +36,56 @@
                 </button>
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> Home </a>
+                        <a class="nav-link text-light @(currentAction == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> About </a>
+                        <a class="nav-link text-light @(currentAction == "About" ? "active" : "")" asp-controller="Home" asp-action="About">About</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "Schedule" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> Schedule </a>
+                        <a class="nav-link text-light @(currentAction == "Schedule" ? "active" : "")" asp-controller="Home" asp-action="Schedule">Schedule</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "Reports" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> Reports </a>
+                        <a class="nav-link text-light @(currentAction == "Reports" ? "active" : "")" asp-controller="Home" asp-action="Reports">Reports</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light @(ViewContext.RouteData.Values["controller"]?.ToString() == "Jobs" ? "active" : "")" asp-area="" asp-controller="Jobs" asp-action="#"> Job List </a>
+                    @if (User.IsInRole("Mechanic"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light @(currentController == "Jobs" ? "active" : "")"
+                               asp-controller="Jobs" asp-action="Index">Job List</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-light @(currentAction == "Create" ? "active" : "")"
+                               asp-controller="Jobs" asp-action="Create">Add Job</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Customer"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light @(currentController == "Customer" ? "active" : "")"
+                               asp-controller="Customer" asp-action="Index">My Orders</a>
+                        </li>
+                    }
+                    {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light @(currentController == "Users" || currentController == "JobTemplates" ? "active" : "")"
+                           data-bs-toggle="dropdown">Admin</a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="JobTemplates" asp-action="Index">Job Templates</a>
+                            </li>
+                        </ul>
                     </li>
+                    }
                 </ul>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>

@@ -1,4 +1,4 @@
-﻿@model AWD1115Final.Models.Job
+﻿@model S3FinalV2.Models.Jobs
 
 @{
     ViewData["Title"] = "Delete Job";
@@ -10,10 +10,10 @@
 <div class="card mb-3 p-3">
     <p><strong>Name:</strong> @Model.Name</p>
     <p><strong>Skill Level:</strong> @Model.SkillLevel</p>
+    <p><strong>Description:</strong> @Model.Description</p>
     <p><strong>Priority:</strong> @Model.Priority</p>
-    <p><strong>Assigned Mechanic:</strong> @Model.AssignedMechanic</p>
-    <p><strong>Completion Time:</strong> @Model.CompletionTime hours</p>
-    <p><strong>Completed:</strong> @(Model.IsCompleted ? "Yes" : "No")</p>
+    <p><strong>Estimated Completion Time:</strong> @Model.EstCompTime</p>
+    <p><strong>Average Completion Time:</strong> @Model.AvgCompletionTime hours</p>
 </div>
 
 <form asp-action="Delete" method="post">

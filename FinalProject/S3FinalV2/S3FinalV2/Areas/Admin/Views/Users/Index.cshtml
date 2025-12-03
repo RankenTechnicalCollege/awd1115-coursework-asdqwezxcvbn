@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model IEnumerable<IdentityUser>
+
+<h2>Manage Users</h2>
+
+<table class="table table-striped">
+    <tr>
+        <th>Email</th>
+        <th>Current Roles</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                <!-- Show roles in the future if needed -->
+            </td>
+            <td>
+                <a href="@Url.Action("AddMechanic", new { id = user.Id })" class="btn btn-sm btn-primary">Make Mechanic</a>
+                <a href="@Url.Action("AddCustomer", new { id = user.Id })" class="btn btn-sm btn-secondary">Make Customer</a>
+                <a href="@Url.Action("RemoveRoles", new { id = user.Id })" class="btn btn-sm btn-danger">Remove Roles</a>
+            </td>
+        </tr>
+    }
+</table>

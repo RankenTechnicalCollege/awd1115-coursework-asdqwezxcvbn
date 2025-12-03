@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using S3FinalV2.Data;
+using Microsoft.AspNetCore.Authorization;
 
-namespace AWD1115Final.Controllers
+namespace S3FinalV2Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class JobsController : Controller
     {
         private readonly MechTrackDbContext _context;
