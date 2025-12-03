@@ -1,0 +1,23 @@
+﻿@model AWD1115Final.Models.Job
+
+@{
+    ViewData["Title"] = "Delete Job";
+}
+
+<h2>Delete Job</h2>
+
+<h4>Are you sure you want to delete this job?</h4>
+<div class="card mb-3 p-3">
+    <p><strong>Name:</strong> @Model.Name</p>
+    <p><strong>Skill Level:</strong> @Model.SkillLevel</p>
+    <p><strong>Priority:</strong> @Model.Priority</p>
+    <p><strong>Assigned Mechanic:</strong> @Model.AssignedMechanic</p>
+    <p><strong>Completion Time:</strong> @Model.CompletionTime hours</p>
+    <p><strong>Completed:</strong> @(Model.IsCompleted ? "Yes" : "No")</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="JobId" />
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

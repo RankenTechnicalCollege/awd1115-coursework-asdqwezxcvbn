@@ -11,7 +11,7 @@
     <meta name="description" content="MechTrack is a mechanic scheduling app for assigning jobs and tracking hours.">
     <meta name="keywords" content="MechTrack, mechanic, scheduling, jobs, hours">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AWD1115Final.styles.css" asp-append-version="true" />
 </head>
@@ -26,25 +26,23 @@
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Schedule">Schedule</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Reports">Reports</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Jobs" asp-action="Index">Job List</a>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> Home </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> About </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "Schedule" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> Schedule </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light @(ViewContext.RouteData.Values["action"]?.ToString() == "Reports" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="#"> Reports </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light @(ViewContext.RouteData.Values["controller"]?.ToString() == "Jobs" ? "active" : "")" asp-area="" asp-controller="Jobs" asp-action="#"> Job List </a>
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>
@@ -62,7 +60,7 @@
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
