@@ -8,8 +8,10 @@ namespace S3FinalV2.Models
         [Key]
         public int CustomerId { get; set; }
 
+        public string UserId { get; set; }
+
         [ForeignKey("UserId")]
-        public ApplicationUser UserId { get; set; }  
+        public ApplicationUser User { get; set; }
 
         public required string Name { get; set; }
 

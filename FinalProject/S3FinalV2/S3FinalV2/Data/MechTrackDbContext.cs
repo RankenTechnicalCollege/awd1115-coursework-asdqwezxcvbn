@@ -11,14 +11,66 @@ namespace S3FinalV2.Data
         {
         }
 
-        public DbSet<Jobs> Jobs { get; set; }
-        public DbSet<AssignedJobs> AssignedJobs { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Customers> Customers { get; set; }
         public DbSet<Mechanics> Mechanics { get; set; }
+        public DbSet<Jobs> Jobs { get; set; }
+        public DbSet<AssignedJobs> AssignedJobs { get; set; }
+        public DbSet<MechanicAssignment> MechanicAssignments { get; set; }
+        public DbSet<WorkWeek> WorkWeeks { get; set; }
+        public DbSet<WorkWeekAssignment> WorkWeekAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Customers>()
+                .HasOne(c => c.User)
+                .WithOne()
+                .HasForeignKey<Customers>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Mechanics>()
+                .HasOne(m => m.User)
+                .WithOne()
+                .HasForeignKey<Mechanics>(m => m.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AssignedJobs>()
+                .HasOne(a => a.Jobs)
+                .WithMany()
+                .HasForeignKey(a => a.JobsId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<AssignedJobs>()
+                .HasOne(a => a.Customer)
+                .WithMany()
+                .HasForeignKey(a => a.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<MechanicAssignment>()
+                .HasOne(ma => ma.Job)
+                .WithMany()
+                .HasForeignKey(ma => ma.JobId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<MechanicAssignment>()
+                .HasOne(ma => ma.Mechanic)
+                .WithMany()
+                .HasForeignKey(ma => ma.MechanicId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<WorkWeekAssignment>()
+                .HasOne(wa => wa.WorkWeek)
+                .WithMany()
+                .HasForeignKey(wa => wa.WorkWeekId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<WorkWeekAssignment>()
+                .HasOne(wa => wa.AssignedJobs)
+                .WithMany()
+                .HasForeignKey(wa => wa.AssignedJobsId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Jobs>().HasData(
             new Jobs {JobId = 1, SkillLevel = 1, Name = "Oil Change", Description = "Change oil and oil filter", Priority = "Low" },

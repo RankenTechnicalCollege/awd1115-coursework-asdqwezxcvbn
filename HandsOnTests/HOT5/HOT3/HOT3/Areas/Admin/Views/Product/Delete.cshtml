@@ -1,0 +1,27 @@
+﻿@model HOT3.Models.Product
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Delete Product";
+}
+<h1>Delete Product</h1>
+
+<div class="card mb-3" style="max-width:540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="~/images/@Model.ImageFileName" class="img-fluid rounded-start" alt="@Model.Name" />
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Name</h5>
+                <p class="card-text">@Model.Description</p>
+                <p class="card-text"><small class="text-muted">Price: @Model.Price.ToString("C")</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" asp-action="Delete">
+    <input type="hidden" name="productId" value="@Model.ProductId" />
+    <button class="btn btn-danger">Delete</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>

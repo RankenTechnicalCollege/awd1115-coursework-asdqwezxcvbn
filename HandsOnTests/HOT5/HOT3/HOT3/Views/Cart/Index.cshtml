@@ -1,0 +1,58 @@
+﻿@model HOT3.Models.CartViewModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h1>Your Cart</h1>
+
+@if (!Model.Items.Any())
+{
+    <p>Your cart is empty.</p>
+    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Continue shopping</a>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Line</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <img src="~/images/@item.ImageFileName" style="height:60px;object-fit:cover" alt="@item.Name" />
+                        <strong>@item.Name</strong>
+                    </td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitPrice.ToString("C")</td>
+                    <td>@item.LineTotal.ToString("C")</td>
+                    <td>
+                        <form asp-action="RemoveItem" method="post">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <button class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <strong>Total items:</strong> @Model.TotalQuantity
+        </div>
+        <div>
+            <strong>Total price:</strong> @Model.TotalPrice.ToString("C")
+            <form asp-action="Purchase" method="post" class="d-inline ms-3">
+                <button class="btn btn-success">Purchase</button>
+            </form>
+        </div>
+    </div>
+}

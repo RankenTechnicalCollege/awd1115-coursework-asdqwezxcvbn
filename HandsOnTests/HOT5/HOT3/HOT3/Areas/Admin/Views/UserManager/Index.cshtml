@@ -1,0 +1,56 @@
+﻿@model IEnumerable<HOT3.Models.ApplicationUser>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<HOT3.Models.ApplicationUser> UserManager
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "User Manager";
+}
+
+<h2 class="mt-4">User Manager</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">@TempData["Message"]</div>
+}
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+                <td>
+                    @{
+                        var roles = await UserManager.GetRolesAsync(user);
+                    }
+                    @string.Join(", ", roles)
+                </td>
+                <td>
+                    <form method="post" asp-action="DeleteUser" class="d-inline">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this user?');">Delete</button>
+                    </form>
+
+                    <a asp-action="ManageRoles" asp-route-id="@user.Id" class="btn btn-sm btn-secondary">Manage Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form method="post" asp-action="CreateRole" class="mt-3">
+    <div class="input-group" style="max-width: 300px;">
+        <input type="text" name="roleName" class="form-control" placeholder="New Role Name" />
+        <button type="submit" class="btn btn-primary">Create Role</button>
+    </div>
+</form>

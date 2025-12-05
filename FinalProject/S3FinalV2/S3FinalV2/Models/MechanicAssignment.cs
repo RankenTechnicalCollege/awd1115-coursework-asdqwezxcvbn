@@ -8,11 +8,11 @@ namespace S3FinalV2.Models
         [Key]
         public int AssignmentId { get; set; }
 
-        [ForeignKey("MechanicId")]
-        public Mechanics MechanicId { get; set; }
+        public int MechanicId { get; set; }
+        public Mechanics? Mechanic { get; set; }
 
-        [ForeignKey("AssignedJobId")]
-        public AssignedJobs JobId { get; set; }
+        public int JobId { get; set; }
+        public AssignedJobs? Job { get; set; }
 
         public float TimeAssigned { get; set; } 
 
@@ -22,10 +22,10 @@ namespace S3FinalV2.Models
         {
             try
             {
-                string AssignedMechanic = MechanicId.Name;
-                bool? IsCompleted = JobId.IsCompleted;
-                string Name = JobId.JobsId.Name;
-                float CompletionTime = JobId.ActualCompTime ?? 0;
+                string AssignedMechanic = Mechanic.Name;
+                bool? IsCompleted = Job.IsCompleted;
+                string Name = Job.Jobs.Name;
+                float CompletionTime = Job?.ActualCompTime ?? 0;
 
                 if (IsCompleted == true)
                 {
@@ -47,12 +47,12 @@ namespace S3FinalV2.Models
 
         public override string ToString()
         {
-            string AssignedMechanic = MechanicId.Name;
-            bool? IsCompleted = JobId.IsCompleted;
-            string Name = JobId.JobsId.Name;
-            float CompletionTime = JobId.ActualCompTime ?? 0;
-            string Description = JobId.JobsId.Description;
-            string Priority = JobId.Priority;
+            string AssignedMechanic = Mechanic.Name;
+            bool? IsCompleted = Job.IsCompleted;
+            string Name = Job.Jobs.Name;
+            float CompletionTime = Job.ActualCompTime ?? 0;
+            string Description = Job.Jobs.Description;
+            string Priority = Job.Priority;
 
             if (IsCompleted == true)
             {

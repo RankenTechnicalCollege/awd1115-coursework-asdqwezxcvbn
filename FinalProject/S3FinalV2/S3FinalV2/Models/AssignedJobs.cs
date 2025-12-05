@@ -8,11 +8,15 @@ namespace S3FinalV2.Models
         [Key]
         public int AssignedJobId { get; set; }
 
+        public int JobsId { get; set; }
+
         [ForeignKey("JobsId")]
-        public Jobs JobsId { get; set; }
+        public Jobs Jobs { get; set; }
+
+        public int CustomerId { get; set; }
 
         [ForeignKey("CustomerId")]
-        public Customers CustomerId { get; set; }
+        public Customers Customer { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 

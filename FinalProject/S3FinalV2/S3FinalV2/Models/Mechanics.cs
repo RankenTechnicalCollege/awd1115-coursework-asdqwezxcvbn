@@ -8,10 +8,12 @@ namespace S3FinalV2.Models
         [Key]
         public int MechanicId { get; set; }
 
-        [ForeignKey("UserId")]
-        public ApplicationUser UserId { get; set; }
+        public string? UserId { get; set; }
 
-        public string Name { get; set; }
+        [ForeignKey("UserId")]
+        public ApplicationUser? User { get; set; }
+
+        public string? Name { get; set; }
 
         public int SkillLevel { get; set; }
 
