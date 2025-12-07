@@ -2,45 +2,52 @@
 
 @{
     ViewData["Title"] = "Edit Job";
+    Layout = "_Layout";
 }
 
 <h2>Edit Job</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-area="Admin" asp-controller="Jobs" asp-action="Edit" method="post">
     <input type="hidden" asp-for="JobId" />
 
     <div class="form-group mb-2">
-        <label asp-for="Name"></label>
+        <label asp-for="Name">Job Name</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
-        <label asp-for="SkillLevel"></label>
+        <label asp-for="SkillLevel">Skill Level</label>
         <input asp-for="SkillLevel" type="number" min="1" max="5" class="form-control" />
         <span asp-validation-for="SkillLevel" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" type="text" class="form-control" />
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
-        <label asp-for="EstCompTime">Estimated Completion Time</label>
-        <input asp-for="EstCompTime" type="number" step="0.25" class="form-control" placeholder="0.0" />
+        <label asp-for="EstCompTime">Estimated Completion Time (hours)</label>
+        <input asp-for="EstCompTime" type="number" step="0.25" class="form-control" />
+        <span asp-validation-for="EstCompTime" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
-        <label asp-for="Priority"></label>
-        <input asp-for="Priority" class="form-control" />
+        <label asp-for="Priority">Priority</label>
+        <input asp-for="Priority" class="form-control" placeholder="Low, Medium, High" />
         <span asp-validation-for="Priority" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="AvgCompletionTime">Average Completion Time (hours)</label>
+        <input asp-for="AvgCompletionTime" type="number" step="0.25" class="form-control" readonly />
     </div>
 
     <div class="form-group mt-2">
         <input type="submit" value="Save Changes" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        <a asp-area="Admin" asp-controller="Jobs" asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
 
