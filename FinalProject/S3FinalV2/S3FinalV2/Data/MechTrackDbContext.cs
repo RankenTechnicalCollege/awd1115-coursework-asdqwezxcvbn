@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using S3FinalV2.Models;
 
 namespace S3FinalV2.Data
 {
-    public class MechTrackDbContext : IdentityDbContext
+    public class MechTrackDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public MechTrackDbContext(DbContextOptions<MechTrackDbContext> options)
             : base(options)

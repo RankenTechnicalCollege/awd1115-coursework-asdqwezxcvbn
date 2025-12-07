@@ -66,9 +66,11 @@
                     {
                         <li class="nav-item">
                             <a class="nav-link text-light @(currentController == "Customer" ? "active" : "")"
-                               asp-controller="Customer" asp-action="Index">My Orders</a>
+                            asp-controller="Customer" asp-action="Index">My Orders</a>
                         </li>
                     }
+
+                    @if (User.IsInRole("Admin"))
                     {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-light @(currentController == "Users" || currentController == "JobTemplates" ? "active" : "")"
