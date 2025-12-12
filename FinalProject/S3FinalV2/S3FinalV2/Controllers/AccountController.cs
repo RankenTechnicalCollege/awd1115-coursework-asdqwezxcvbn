@@ -18,9 +18,6 @@ namespace S3FinalV2.Controllers
         }
 
         // GET: /Account/Register
-        [HttpGet]
-        public IActionResult Register() => View(new RegisterViewModel());
-
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel vm)
         {
@@ -35,16 +32,23 @@ namespace S3FinalV2.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, vm.Password);
+
             if (!result.Succeeded)
             {
-                foreach (var e in result.Errors) ModelState.AddModelError("", e.Description);
+                foreach (var e in result.Errors)
+                    ModelState.AddModelError("", e.Description);
                 return View(vm);
             }
 
-            // sign in automatically
+            // Automatically give new account the Customer role
+            await _userManager.AddToRoleAsync(user, "Customer");
+
+            // Sign in automatically
             await _signInManager.SignInAsync(user, isPersistent: vm.RememberMe);
+
             return RedirectToAction("Index", "Home");
         }
+
 
         // GET: /Account/Login
         [HttpGet]

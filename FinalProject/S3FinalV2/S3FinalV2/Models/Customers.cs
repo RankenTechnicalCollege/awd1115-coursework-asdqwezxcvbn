@@ -22,5 +22,8 @@ namespace S3FinalV2.Models
         public required string CustomerPassword { get; set; }
 
         public required string VehicleInfo { get; set; }
+
+        [NotMapped]
+        public string FullName => Name;
     }
 }
