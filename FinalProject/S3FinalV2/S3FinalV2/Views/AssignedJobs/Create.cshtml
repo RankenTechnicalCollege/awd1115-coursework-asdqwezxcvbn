@@ -1,0 +1,27 @@
+﻿@model S3FinalV2.Models.AssignedJobs
+@{
+    ViewData["Title"] = "Create Assigned Job";
+    Layout = "_Layout";
+}
+
+<h2>Create Assigned Job</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label for="CustomerId" class="form-label">Customer</label>
+        <select asp-for="CustomerId" class="form-select" asp-items="@(new SelectList(ViewBag.Customers, "CustomerId", "FullName"))"></select>
+    </div>
+
+    <div class="mb-3">
+        <label for="JobsId" class="form-label">Job Type</label>
+        <select asp-for="JobsId" class="form-select" asp-items="@(new SelectList(ViewBag.Jobs, "JobId", "Name"))"></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Priority" class="form-label">Priority</label>
+        <input asp-for="Priority" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<S3FinalV2.Models.AssignedJobs>
+@{
+    ViewData["Title"] = "My Jobs";
+    Layout = "_Layout";
+}
+
+<h2>My Assigned Jobs</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Job</th>
+            <th>Customer</th>
+            <th>Est Hrs</th>
+            <th>Actual</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.AssignedJobId</td>
+                <td>@a.Jobs?.Name</td>
+                <td>@a.Customer?.FullName</td>
+                <td>@a.Jobs?.EstCompTime</td>
+                <td>@a.ActualCompTime</td>
+                <td>@(a.IsCompleted == true ? "Completed" : "In Progress")</td>
+                <td>
+                    @if (a.IsCompleted != true)
+                    {
+                        <form method="post" asp-controller="AssignedJobs" asp-action="CompleteJob" class="d-inline">
+                            <input type="hidden" name="jobId" value="@a.AssignedJobId" />
+                            <input type="number" step="0.25" name="actualHours" class="form-control d-inline-block w-auto" placeholder="hours" />
+                            <button type="submit" class="btn btn-success ms-1">Complete</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

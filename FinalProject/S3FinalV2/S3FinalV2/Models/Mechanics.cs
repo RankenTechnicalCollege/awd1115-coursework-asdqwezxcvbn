@@ -24,6 +24,16 @@ namespace S3FinalV2.Models
         public int[] AssignedJobs { get; set; } = Array.Empty<int>();
 
         public int[] CompletedJobs { get; set; } = Array.Empty<int>();
+
+        [NotMapped]
+        public string FullName => Name ?? "Unnamed Mechanic";
+
+        [NotMapped]
+        public double TotalHoursWorked => TotalHours;
+
+        [NotMapped]
+        public int Id => MechanicId;
+
         public string AssignJob(int maxJobId, float hours, int skillLevel)
         {
             try
@@ -64,10 +74,7 @@ namespace S3FinalV2.Models
                 completedList.Add(jobId);
                 CompletedJobs = completedList.ToArray();
             }
-            catch (Exception ex)
-            {
-                //MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+            catch { }
         }
 
         public override string ToString()
@@ -81,10 +88,7 @@ namespace S3FinalV2.Models
             {
                 AssignedJobs = AssignedJobs.Where(job => job != jobId).ToArray();
             }
-            catch (Exception ex)
-            {
-                //MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+            catch { }
         }
     }
 }

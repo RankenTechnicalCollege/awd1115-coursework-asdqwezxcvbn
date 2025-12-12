@@ -40,12 +40,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-light @(currentAction == "About" ? "active" : "")" asp-controller="Home" asp-action="About">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light @(currentAction == "Schedule" ? "active" : "")" asp-controller="Home" asp-action="Schedule">Schedule</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light @(currentAction == "Reports" ? "active" : "")" asp-controller="Home" asp-action="Reports">Reports</a>
-                        </li>
 
                         @if (User.IsInRole("Mechanic"))
                         {

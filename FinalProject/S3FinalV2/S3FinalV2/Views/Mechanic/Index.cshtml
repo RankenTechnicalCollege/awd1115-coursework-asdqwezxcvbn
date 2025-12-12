@@ -1,5 +1,27 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<S3FinalV2.Models.Mechanics>
+
+<h2>Mechanics</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Skill Level</th>
+            <th>Total Hours</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.FullName</td>
+                <td>@m.SkillLevel</td>
+                <td>@m.TotalHoursWorked</td>
+                <td>
+                    <a href="/AssignedJobs?mechanicId=@m.Id" class="btn btn-primary">View Jobs</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
