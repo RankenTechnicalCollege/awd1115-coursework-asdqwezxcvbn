@@ -7,7 +7,6 @@ public static class SeedMechanics
     {
         var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-        // Make sure role exists
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         if (!await roleManager.RoleExistsAsync("Mechanic"))
         {

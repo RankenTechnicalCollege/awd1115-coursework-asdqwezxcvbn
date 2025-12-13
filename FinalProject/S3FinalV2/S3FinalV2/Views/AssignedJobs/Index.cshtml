@@ -47,9 +47,11 @@
                 <td>
                     @if (a.AssignedMechanics != null && a.AssignedMechanics.Any())
                     {
-                        foreach (var m in a.AssignedMechanics)
+                        @foreach (var ma in a.AssignedMechanics)
                         {
-                            <span class="badge bg-secondary">@m.Name</span>
+                            <span class="badge bg-secondary">
+                                @ma.Mechanic?.Name
+                            </span>
                         }
                     }
                     else

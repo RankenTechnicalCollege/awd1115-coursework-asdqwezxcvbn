@@ -1,0 +1,45 @@
+﻿@model S3FinalV2.Models.AssignedJobs
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details</h2>
+
+<div class="card p-3">
+    <h4>@Model.Jobs?.Name</h4>
+    <p><strong>Vehicle:</strong> @Model.Customer?.VehicleInfo</p>
+    <p><strong>Description:</strong> @Model.Jobs?.Description</p>
+    <p><strong>Priority:</strong> @Model.Priority</p>
+
+    <p>
+        <strong>Status:</strong>
+        @if (Model.IsCompleted == true)
+        {
+            <span class="badge bg-success">Completed</span>
+        }
+        else
+        {
+            <span class="badge bg-warning">In Progress</span>
+        }
+    </p>
+
+    <p><strong>Estimated Hours:</strong> @Model.Jobs?.EstCompTime</p>
+    <p><strong>Actual Completion Time:</strong> @Model.ActualCompTime</p>
+
+    <h5 class="mt-3">Assigned Mechanics</h5>
+    @if (Model.AssignedMechanics != null && Model.AssignedMechanics.Any())
+    {
+        <ul>
+            @foreach (var ma in Model.AssignedMechanics)
+            {
+                <li>@ma.Mechanic?.Name (@ma.Mechanic?.SkillLevel)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">No mechanics assigned yet.</p>
+    }
+
+    <a asp-action="Orders" class="btn btn-secondary mt-3">Back</a>
+</div>

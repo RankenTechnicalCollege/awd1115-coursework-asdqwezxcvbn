@@ -1,0 +1,59 @@
+﻿@model IEnumerable<S3FinalV2.Models.AssignedJobs>
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h2>My Service Orders</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Job</th>
+            <th>Vehicle</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Mechanic(s)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.Jobs?.Name</td>
+                <td>@o.Customer?.VehicleInfo</td>
+                <td>@o.Priority</td>
+                <td>
+                    @if (o.IsCompleted == true)
+                    {
+                        <span class="badge bg-success">Completed</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning">In Progress</span>
+                    }
+                </td>
+                <td>
+                    @if (o.AssignedMechanics != null && o.AssignedMechanics.Any())
+                    {
+                        foreach (var m in o.AssignedMechanics)
+                        {
+                            <span class="badge bg-secondary">@m.Mechanic?.Name</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">Unassigned</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="OrderDetails"
+                       asp-route-id="@o.AssignedJobId"
+                       class="btn btn-primary btn-sm">
+                        Details
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

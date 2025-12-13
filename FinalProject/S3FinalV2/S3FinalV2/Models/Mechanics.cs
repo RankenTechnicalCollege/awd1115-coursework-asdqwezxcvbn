@@ -25,13 +25,10 @@ namespace S3FinalV2.Models
 
         public int[] CompletedJobs { get; set; } = Array.Empty<int>();
 
-        [NotMapped]
         public string FullName => Name ?? "Unnamed Mechanic";
 
-        [NotMapped]
         public double TotalHoursWorked => TotalHours;
 
-        [NotMapped]
         public int Id => MechanicId;
 
         public string AssignJob(int maxJobId, float hours, int skillLevel)
