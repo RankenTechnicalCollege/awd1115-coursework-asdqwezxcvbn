@@ -17,6 +17,7 @@ namespace S3FinalV2.Controllers
             _context = context;
         }
 
+        // GET: /Customer/Orders
         public async Task<IActionResult> Orders()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -24,15 +25,15 @@ namespace S3FinalV2.Controllers
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
+            // Auto-create customer profile if missing
             if (customer == null)
             {
                 customer = new Customers
                 {
-                    UserId = userId,
-                    Name = User.Identity.Name ?? "",
-                    CustomerEmail = User.Identity.Name ?? "",
-                    CustomerPhone = "Not Provided",
-                    CustomerPassword = "",
+                    UserId = userId!,
+                    Name = User.Identity?.Name ?? "Customer",
+                    Email = User.Identity?.Name ?? "unknown@email.com",
+                    Phone = "Not Provided",
                     VehicleInfo = "Not Provided"
                 };
 
@@ -42,15 +43,16 @@ namespace S3FinalV2.Controllers
 
             var orders = await _context.AssignedJobs
                 .Include(a => a.Jobs)
-                .Include(a => a.Customer)
-                .Include(a => a.AssignedMechanics)
+                .Include(a => a.MechanicAssignments)
                     .ThenInclude(ma => ma.Mechanic)
                 .Where(a => a.CustomerId == customer.CustomerId)
+                .OrderByDescending(a => a.CreatedDate)
                 .ToListAsync();
 
             return View(orders);
         }
 
+        // GET: /Customer/OrderDetails/5
         public async Task<IActionResult> OrderDetails(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,17 +61,15 @@ namespace S3FinalV2.Controllers
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
             if (customer == null)
-            {
                 return RedirectToAction(nameof(Orders));
-            }
 
             var order = await _context.AssignedJobs
                 .Include(a => a.Jobs)
-                .Include(a => a.Customer)
-                .Include(a => a.AssignedMechanics)
+                .Include(a => a.MechanicAssignments)
                     .ThenInclude(ma => ma.Mechanic)
-                .FirstOrDefaultAsync(a => a.AssignedJobId == id
-                    && a.CustomerId == customer.CustomerId);
+                .FirstOrDefaultAsync(a =>
+                    a.AssignedJobId == id &&
+                    a.CustomerId == customer.CustomerId);
 
             if (order == null)
                 return NotFound();

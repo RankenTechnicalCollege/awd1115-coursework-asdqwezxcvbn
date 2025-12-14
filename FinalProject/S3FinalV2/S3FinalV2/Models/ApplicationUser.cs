@@ -4,14 +4,9 @@ namespace S3FinalV2.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public string UserId { get; set; } = string.Empty;  
+        public string? Role { get; set; }
 
-        public required string UserName { get; set; }
-
-        public required string Email { get; set; }
-
-        public required string PasswordHash { get; set; }
-
-        public required string Role { get; set; }
+        public Customers? Customer { get; set; }
+        public Mechanics? Mechanic { get; set; }
     }
 }

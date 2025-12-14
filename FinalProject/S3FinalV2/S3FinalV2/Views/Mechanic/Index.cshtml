@@ -7,7 +7,6 @@
         <tr>
             <th>Name</th>
             <th>Skill Level</th>
-            <th>Total Hours</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -15,11 +14,15 @@
         @foreach (var m in Model)
         {
             <tr>
-                <td>@m.FullName</td>
+                <td>@m.Name</td>
                 <td>@m.SkillLevel</td>
-                <td>@m.TotalHoursWorked</td>
                 <td>
-                    <a href="/AssignedJobs?mechanicId=@m.Id" class="btn btn-primary">View Jobs</a>
+                    <a asp-controller="AssignedJobs"
+                       asp-action="Index"
+                       asp-route-mechanicId="@m.MechanicId"
+                       class="btn btn-primary">
+                        View Jobs
+                    </a>
                 </td>
             </tr>
         }

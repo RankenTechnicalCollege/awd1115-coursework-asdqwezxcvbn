@@ -74,80 +74,6 @@ namespace S3FinalV2.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator().HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -229,6 +155,84 @@ namespace S3FinalV2.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("S3FinalV2.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("MechanicId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("MechanicId");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("S3FinalV2.Models.AssignedJobs", b =>
                 {
                     b.Property<int>("AssignedJobId")
@@ -237,7 +241,7 @@ namespace S3FinalV2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssignedJobId"));
 
-                    b.Property<float?>("ActualCompTime")
+                    b.Property<float?>("ActualHours")
                         .HasColumnType("real");
 
                     b.Property<DateTime>("CreatedDate")
@@ -246,21 +250,30 @@ namespace S3FinalV2.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsCompleted")
+                    b.Property<int?>("CustomersCustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("EstimatedHours")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("JobsId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("JobsJobId")
+                        .HasColumnType("int");
 
                     b.HasKey("AssignedJobId");
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("CustomersCustomerId");
+
                     b.HasIndex("JobsId");
+
+                    b.HasIndex("JobsJobId");
 
                     b.ToTable("AssignedJobs");
                 });
@@ -273,19 +286,15 @@ namespace S3FinalV2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
-                    b.Property<string>("CustomerEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerPhone")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -299,8 +308,7 @@ namespace S3FinalV2.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Customers");
                 });
@@ -317,16 +325,19 @@ namespace S3FinalV2.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("EstCompTime")
-                        .HasColumnType("real");
+                    b.Property<string>("EstCompTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Priority")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SkillLevel")
@@ -342,7 +353,7 @@ namespace S3FinalV2.Migrations
                             JobId = 1,
                             AvgCompletionTime = 0f,
                             Description = "Change oil and oil filter",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.5",
                             Name = "Oil Change",
                             Priority = "Low",
                             SkillLevel = 1
@@ -352,7 +363,7 @@ namespace S3FinalV2.Migrations
                             JobId = 2,
                             AvgCompletionTime = 0f,
                             Description = "Replace Break Pads",
-                            EstCompTime = 0f,
+                            EstCompTime = "1",
                             Name = "Breaks",
                             Priority = "Low",
                             SkillLevel = 1
@@ -362,7 +373,7 @@ namespace S3FinalV2.Migrations
                             JobId = 3,
                             AvgCompletionTime = 0f,
                             Description = "Replace Air Filter",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.25",
                             Name = "Air Filter",
                             Priority = "Low",
                             SkillLevel = 1
@@ -372,7 +383,7 @@ namespace S3FinalV2.Migrations
                             JobId = 4,
                             AvgCompletionTime = 0f,
                             Description = "Replace Cabin Filter",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.25",
                             Name = "Cabin Filter",
                             Priority = "Low",
                             SkillLevel = 1
@@ -382,7 +393,7 @@ namespace S3FinalV2.Migrations
                             JobId = 5,
                             AvgCompletionTime = 0f,
                             Description = "Balance And Install/Mount New Tires",
-                            EstCompTime = 0f,
+                            EstCompTime = "2",
                             Name = "Tire Mounting And Balancing",
                             Priority = "Low",
                             SkillLevel = 1
@@ -392,7 +403,7 @@ namespace S3FinalV2.Migrations
                             JobId = 6,
                             AvgCompletionTime = 0f,
                             Description = "Replace Windshield Wipers",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.25",
                             Name = "Windshield Wipers",
                             Priority = "Low",
                             SkillLevel = 1
@@ -402,7 +413,7 @@ namespace S3FinalV2.Migrations
                             JobId = 7,
                             AvgCompletionTime = 0f,
                             Description = "Rotate Tires",
-                            EstCompTime = 0f,
+                            EstCompTime = "1",
                             Name = "Tire Rotation",
                             Priority = "Low",
                             SkillLevel = 1
@@ -412,7 +423,7 @@ namespace S3FinalV2.Migrations
                             JobId = 8,
                             AvgCompletionTime = 0f,
                             Description = "Remove/Drain And Replace Vehicle's Fluids",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.5",
                             Name = "Change Fluids",
                             Priority = "Low",
                             SkillLevel = 1
@@ -422,7 +433,7 @@ namespace S3FinalV2.Migrations
                             JobId = 9,
                             AvgCompletionTime = 0f,
                             Description = "Replace Catalitic Convertor",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.5",
                             Name = "Catalitic Convertor",
                             Priority = "Low",
                             SkillLevel = 2
@@ -432,7 +443,7 @@ namespace S3FinalV2.Migrations
                             JobId = 10,
                             AvgCompletionTime = 0f,
                             Description = "Replace Of Spark Plugs",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.25",
                             Name = "Spark Plugs",
                             Priority = "Low",
                             SkillLevel = 2
@@ -442,7 +453,7 @@ namespace S3FinalV2.Migrations
                             JobId = 11,
                             AvgCompletionTime = 0f,
                             Description = "Replace Head Gasket",
-                            EstCompTime = 0f,
+                            EstCompTime = "1",
                             Name = "Internal Engine Work",
                             Priority = "Low",
                             SkillLevel = 2
@@ -452,7 +463,7 @@ namespace S3FinalV2.Migrations
                             JobId = 12,
                             AvgCompletionTime = 0f,
                             Description = "Replace Water Pump",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.25",
                             Name = "Water Pump",
                             Priority = "Low",
                             SkillLevel = 2
@@ -462,7 +473,7 @@ namespace S3FinalV2.Migrations
                             JobId = 13,
                             AvgCompletionTime = 0f,
                             Description = "Replace Alternator",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.25",
                             Name = "Alternator",
                             Priority = "Low",
                             SkillLevel = 2
@@ -472,9 +483,9 @@ namespace S3FinalV2.Migrations
                             JobId = 14,
                             AvgCompletionTime = 0f,
                             Description = "Replace Intake",
-                            EstCompTime = 0f,
+                            EstCompTime = "0.5",
                             Name = "Intake",
-                            Priority = "Low  ",
+                            Priority = "Low",
                             SkillLevel = 2
                         },
                         new
@@ -482,7 +493,7 @@ namespace S3FinalV2.Migrations
                             JobId = 15,
                             AvgCompletionTime = 0f,
                             Description = "Replace Exhaust Manifold",
-                            EstCompTime = 0f,
+                            EstCompTime = "1",
                             Name = "Exhaust Manifold",
                             Priority = "Low",
                             SkillLevel = 2
@@ -492,7 +503,7 @@ namespace S3FinalV2.Migrations
                             JobId = 16,
                             AvgCompletionTime = 0f,
                             Description = "Replace Clutch",
-                            EstCompTime = 0f,
+                            EstCompTime = "6",
                             Name = "Clutch",
                             Priority = "Low",
                             SkillLevel = 3
@@ -502,7 +513,7 @@ namespace S3FinalV2.Migrations
                             JobId = 17,
                             AvgCompletionTime = 0f,
                             Description = "Replace Transmission",
-                            EstCompTime = 0f,
+                            EstCompTime = "5",
                             Name = "Transmission",
                             Priority = "Low",
                             SkillLevel = 3
@@ -512,7 +523,7 @@ namespace S3FinalV2.Migrations
                             JobId = 18,
                             AvgCompletionTime = 0f,
                             Description = "Fix Electrical Issues",
-                            EstCompTime = 0f,
+                            EstCompTime = "3.25",
                             Name = "Electrical Issues",
                             Priority = "Low",
                             SkillLevel = 3
@@ -522,7 +533,7 @@ namespace S3FinalV2.Migrations
                             JobId = 19,
                             AvgCompletionTime = 0f,
                             Description = "Replace Pistons And Rings",
-                            EstCompTime = 0f,
+                            EstCompTime = "7.75",
                             Name = "Engine Internals",
                             Priority = "Low",
                             SkillLevel = 3
@@ -532,7 +543,7 @@ namespace S3FinalV2.Migrations
                             JobId = 20,
                             AvgCompletionTime = 0f,
                             Description = "Replace Engine",
-                            EstCompTime = 0f,
+                            EstCompTime = "15",
                             Name = "Engine Replacement",
                             Priority = "Low",
                             SkillLevel = 4
@@ -542,7 +553,7 @@ namespace S3FinalV2.Migrations
                             JobId = 21,
                             AvgCompletionTime = 0f,
                             Description = "Fix Wiring",
-                            EstCompTime = 0f,
+                            EstCompTime = "2.5",
                             Name = "Fix Wiring",
                             Priority = "Low",
                             SkillLevel = 4
@@ -552,8 +563,9 @@ namespace S3FinalV2.Migrations
                             JobId = 22,
                             AvgCompletionTime = 0f,
                             Description = "Any Work Here",
-                            EstCompTime = 0f,
+                            EstCompTime = "1.5",
                             Name = "Work On A Maserati",
+                            Priority = "Low",
                             SkillLevel = 4
                         },
                         new
@@ -561,40 +573,36 @@ namespace S3FinalV2.Migrations
                             JobId = 23,
                             AvgCompletionTime = 0f,
                             Description = "Any Work Here",
-                            EstCompTime = 0f,
+                            EstCompTime = "1.5",
                             Name = "Work On A Alpha Romeo",
+                            Priority = "Low",
                             SkillLevel = 4
                         });
                 });
 
             modelBuilder.Entity("S3FinalV2.Models.MechanicAssignment", b =>
                 {
-                    b.Property<int>("AssignmentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssignmentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AssignedJobsAssignedJobId")
-                        .HasColumnType("int");
+                    b.Property<float>("ActualHours")
+                        .HasColumnType("real");
 
-                    b.Property<int>("JobId")
+                    b.Property<float>("AssignedHours")
+                        .HasColumnType("real");
+
+                    b.Property<int>("AssignedJobId")
                         .HasColumnType("int");
 
                     b.Property<int>("MechanicId")
                         .HasColumnType("int");
 
-                    b.Property<float>("TimeAssigned")
-                        .HasColumnType("real");
+                    b.HasKey("Id");
 
-                    b.Property<float>("TimeCompleted")
-                        .HasColumnType("real");
-
-                    b.HasKey("AssignmentId");
-
-                    b.HasIndex("AssignedJobsAssignedJobId");
-
-                    b.HasIndex("JobId");
+                    b.HasIndex("AssignedJobId");
 
                     b.HasIndex("MechanicId");
 
@@ -609,275 +617,70 @@ namespace S3FinalV2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MechanicId"));
 
-                    b.PrimitiveCollection<string>("AssignedJobs")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("CompletedJobs")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("HourlyLimitPerWeek")
+                        .HasColumnType("real");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SkillLevel")
                         .HasColumnType("int");
 
-                    b.Property<float>("TotalHours")
+                    b.Property<float>("TotalHoursWorked")
                         .HasColumnType("real");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<float>("WeeklyHourLimit")
-                        .HasColumnType("real");
 
                     b.HasKey("MechanicId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Mechanics");
-
-                    b.HasData(
-                        new
-                        {
-                            MechanicId = 1,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Ashtin Gebert",
-                            SkillLevel = 4,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 2,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Patrick Rodgers",
-                            SkillLevel = 4,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 3,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Aaron Barkley",
-                            SkillLevel = 4,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 4,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Bird Ball",
-                            SkillLevel = 3,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 5,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Kareem Ryan",
-                            SkillLevel = 3,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 6,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Gabriel Wilt",
-                            SkillLevel = 3,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 7,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Kelce Baker",
-                            SkillLevel = 3,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 8,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Stephinie John",
-                            SkillLevel = 2,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 9,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Beatriz Kareem",
-                            SkillLevel = 2,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 10,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Bill Patrick",
-                            SkillLevel = 2,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 11,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Ashtin Peterson",
-                            SkillLevel = 2,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 12,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Eric Newton",
-                            SkillLevel = 2,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 13,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Hanna Tyson",
-                            SkillLevel = 1,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 14,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Diya John",
-                            SkillLevel = 1,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 15,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Wilt Rodgers",
-                            SkillLevel = 1,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 16,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "LeBron Ali",
-                            SkillLevel = 1,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 17,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Fatima Ball",
-                            SkillLevel = 1,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        },
-                        new
-                        {
-                            MechanicId = 18,
-                            AssignedJobs = "[]",
-                            CompletedJobs = "[]",
-                            Name = "Aaron Magic",
-                            SkillLevel = 1,
-                            TotalHours = 0f,
-                            WeeklyHourLimit = 0f
-                        });
                 });
 
             modelBuilder.Entity("S3FinalV2.Models.WorkWeek", b =>
                 {
-                    b.Property<int>("WorkWeekId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkWeekId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("WeekEnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime>("WeekStart")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("WorkWeekId");
+                    b.HasKey("Id");
 
                     b.ToTable("WorkWeeks");
                 });
 
             modelBuilder.Entity("S3FinalV2.Models.WorkWeekAssignment", b =>
                 {
-                    b.Property<int>("WorkWeekAssignmentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkWeekAssignmentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AssignedJobsId")
+                    b.Property<int>("AssignedJobId")
                         .HasColumnType("int");
 
                     b.Property<int>("WorkWeekId")
                         .HasColumnType("int");
 
-                    b.HasKey("WorkWeekAssignmentId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("AssignedJobsId");
+                    b.HasIndex("AssignedJobId");
 
                     b.HasIndex("WorkWeekId");
 
                     b.ToTable("WorkWeekAssignments");
-                });
-
-            modelBuilder.Entity("S3FinalV2.Models.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -891,7 +694,7 @@ namespace S3FinalV2.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("S3FinalV2.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -900,7 +703,7 @@ namespace S3FinalV2.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("S3FinalV2.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -915,7 +718,7 @@ namespace S3FinalV2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("S3FinalV2.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -924,11 +727,26 @@ namespace S3FinalV2.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("S3FinalV2.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("S3FinalV2.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("S3FinalV2.Models.Customers", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("S3FinalV2.Models.Mechanics", "Mechanic")
+                        .WithMany()
+                        .HasForeignKey("MechanicId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Mechanic");
                 });
 
             modelBuilder.Entity("S3FinalV2.Models.AssignedJobs", b =>
@@ -939,11 +757,19 @@ namespace S3FinalV2.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("S3FinalV2.Models.Customers", null)
+                        .WithMany("AssignedJobs")
+                        .HasForeignKey("CustomersCustomerId");
+
                     b.HasOne("S3FinalV2.Models.Jobs", "Jobs")
                         .WithMany()
                         .HasForeignKey("JobsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("S3FinalV2.Models.Jobs", null)
+                        .WithMany("AssignedJobs")
+                        .HasForeignKey("JobsJobId");
 
                     b.Navigation("Customer");
 
@@ -953,8 +779,8 @@ namespace S3FinalV2.Migrations
             modelBuilder.Entity("S3FinalV2.Models.Customers", b =>
                 {
                     b.HasOne("S3FinalV2.Models.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("S3FinalV2.Models.Customers", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -963,23 +789,19 @@ namespace S3FinalV2.Migrations
 
             modelBuilder.Entity("S3FinalV2.Models.MechanicAssignment", b =>
                 {
-                    b.HasOne("S3FinalV2.Models.AssignedJobs", null)
-                        .WithMany("AssignedMechanics")
-                        .HasForeignKey("AssignedJobsAssignedJobId");
-
-                    b.HasOne("S3FinalV2.Models.AssignedJobs", "Job")
-                        .WithMany()
-                        .HasForeignKey("JobId")
+                    b.HasOne("S3FinalV2.Models.AssignedJobs", "AssignedJob")
+                        .WithMany("MechanicAssignments")
+                        .HasForeignKey("AssignedJobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("S3FinalV2.Models.Mechanics", "Mechanic")
-                        .WithMany()
+                        .WithMany("MechanicAssignments")
                         .HasForeignKey("MechanicId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Job");
+                    b.Navigation("AssignedJob");
 
                     b.Navigation("Mechanic");
                 });
@@ -987,35 +809,58 @@ namespace S3FinalV2.Migrations
             modelBuilder.Entity("S3FinalV2.Models.Mechanics", b =>
                 {
                     b.HasOne("S3FinalV2.Models.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("S3FinalV2.Models.Mechanics", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("S3FinalV2.Models.WorkWeekAssignment", b =>
                 {
-                    b.HasOne("S3FinalV2.Models.AssignedJobs", "AssignedJobs")
-                        .WithMany()
-                        .HasForeignKey("AssignedJobsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("S3FinalV2.Models.AssignedJobs", "AssignedJob")
+                        .WithMany("WorkWeekAssignments")
+                        .HasForeignKey("AssignedJobId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("S3FinalV2.Models.WorkWeek", "WorkWeek")
-                        .WithMany()
+                        .WithMany("WorkWeekAssignments")
                         .HasForeignKey("WorkWeekId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AssignedJobs");
+                    b.Navigation("AssignedJob");
 
                     b.Navigation("WorkWeek");
                 });
 
             modelBuilder.Entity("S3FinalV2.Models.AssignedJobs", b =>
                 {
-                    b.Navigation("AssignedMechanics");
+                    b.Navigation("MechanicAssignments");
+
+                    b.Navigation("WorkWeekAssignments");
+                });
+
+            modelBuilder.Entity("S3FinalV2.Models.Customers", b =>
+                {
+                    b.Navigation("AssignedJobs");
+                });
+
+            modelBuilder.Entity("S3FinalV2.Models.Jobs", b =>
+                {
+                    b.Navigation("AssignedJobs");
+                });
+
+            modelBuilder.Entity("S3FinalV2.Models.Mechanics", b =>
+                {
+                    b.Navigation("MechanicAssignments");
+                });
+
+            modelBuilder.Entity("S3FinalV2.Models.WorkWeek", b =>
+                {
+                    b.Navigation("WorkWeekAssignments");
                 });
 #pragma warning restore 612, 618
         }

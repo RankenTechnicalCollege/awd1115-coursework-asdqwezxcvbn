@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<S3FinalV2.Models.AssignedJobs>
+
 @{
     ViewData["Title"] = "My Orders";
 }
@@ -21,24 +22,30 @@
         {
             <tr>
                 <td>@o.Jobs?.Name</td>
+
                 <td>@o.Customer?.VehicleInfo</td>
-                <td>@o.Priority</td>
+
+                <td>@o.Jobs?.Priority</td>
+
                 <td>
-                    @if (o.IsCompleted == true)
+                    @if (o.MechanicAssignments != null && o.MechanicAssignments.Any())
                     {
-                        <span class="badge bg-success">Completed</span>
+                        <span class="badge bg-info">Assigned</span>
                     }
                     else
                     {
-                        <span class="badge bg-warning">In Progress</span>
+                        <span class="badge bg-warning">Pending</span>
                     }
                 </td>
+
                 <td>
-                    @if (o.AssignedMechanics != null && o.AssignedMechanics.Any())
+                    @if (o.MechanicAssignments != null && o.MechanicAssignments.Any())
                     {
-                        foreach (var m in o.AssignedMechanics)
+                        foreach (var ma in o.MechanicAssignments)
                         {
-                            <span class="badge bg-secondary">@m.Mechanic?.Name</span>
+                            <span class="badge bg-secondary">
+                                @ma.Mechanic?.Name
+                            </span>
                         }
                     }
                     else
@@ -46,8 +53,9 @@
                         <span class="text-muted">Unassigned</span>
                     }
                 </td>
+
                 <td>
-                    <a asp-action="OrderDetails"
+                    <a asp-action="Details"
                        asp-route-id="@o.AssignedJobId"
                        class="btn btn-primary btn-sm">
                         Details

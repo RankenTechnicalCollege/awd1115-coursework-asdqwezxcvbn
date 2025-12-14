@@ -8,21 +8,24 @@ namespace S3FinalV2.Models
         [Key]
         public int CustomerId { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
-        [ForeignKey("UserId")]
+        [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; }
 
-        public required string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-        public required string CustomerEmail { get; set; }
+        [Required]
+        public string Phone { get; set; }
 
-        public required string CustomerPhone { get; set; }
+        [Required]
+        public string Email { get; set; } = string.Empty;
 
-        public required string CustomerPassword { get; set; }
+        [Required]
+        public string VehicleInfo { get; set; }
 
-        public required string VehicleInfo { get; set; }
-
-        public string FullName => Name;
+        public ICollection<AssignedJobs> AssignedJobs { get; set; } = new List<AssignedJobs>();
     }
 }

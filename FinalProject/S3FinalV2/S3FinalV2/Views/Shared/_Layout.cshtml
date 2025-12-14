@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
-@inject UserManager<IdentityUser> UserManager
-@inject SignInManager<IdentityUser> SignInManager
+@using S3FinalV2.Models
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     var year = DateTime.Now.Year;
@@ -47,14 +48,14 @@
 
                         <li class="nav-item">
                             <a class="nav-link @(controller == "Home" && action == "Index" ? "active" : "")"
-                               asp-controller="Home" asp-action="Index">
+                                asp-area="" asp-controller="Home" asp-action="Index">
                                 Home
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link @(controller == "Home" && action == "About" ? "active" : "")"
-                               asp-controller="Home" asp-action="About">
+                                asp-area="" asp-controller="Home" asp-action="About">
                                 About
                             </a>
                         </li>
@@ -63,7 +64,7 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link @(controller == "AssignedJobs" ? "active" : "")"
-                                   asp-controller="AssignedJobs" asp-action="Index">
+                                    asp-controller="AssignedJobs" asp-action="Index">
                                     Assigned Jobs
                                 </a>
                             </li>

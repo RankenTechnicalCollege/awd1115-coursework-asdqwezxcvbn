@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using S3FinalV2.Models;
 
 public static class SeedAdmin
 {
     public static async Task InitializeAsync(IServiceProvider services)
     {
-        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
         string adminEmail = "admin@example.com";
@@ -19,7 +20,7 @@ public static class SeedAdmin
 
         if (admin == null)
         {
-            admin = new IdentityUser
+            admin = new ApplicationUser
             {
                 UserName = adminEmail,
                 Email = adminEmail,

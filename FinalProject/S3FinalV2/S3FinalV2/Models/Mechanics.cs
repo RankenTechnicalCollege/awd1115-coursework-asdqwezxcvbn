@@ -8,84 +8,22 @@ namespace S3FinalV2.Models
         [Key]
         public int MechanicId { get; set; }
 
-        public string? UserId { get; set; }
+        [Required]
+        public string UserId { get; set; }
 
-        [ForeignKey("UserId")]
-        public ApplicationUser? User { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; }
 
-        public string? Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
         public int SkillLevel { get; set; }
 
-        public float WeeklyHourLimit { get; set; }
+        public float HourlyLimitPerWeek { get; set; }
 
-        public float TotalHours { get; set; }
+        public float TotalHoursWorked { get; set; }
 
-        public int[] AssignedJobs { get; set; } = Array.Empty<int>();
-
-        public int[] CompletedJobs { get; set; } = Array.Empty<int>();
-
-        public string FullName => Name ?? "Unnamed Mechanic";
-
-        public double TotalHoursWorked => TotalHours;
-
-        public int Id => MechanicId;
-
-        public string AssignJob(int maxJobId, float hours, int skillLevel)
-        {
-            try
-            {
-                string outcome = "";
-                int jobId = maxJobId;
-
-                if (TotalHours + hours > 40)
-                {
-                    outcome = $"Cannot assign shift. All Mechanics would exceed 40 hours.";
-                }
-                else if (TotalHours + hours < 40 && SkillLevel >= skillLevel)
-                {
-                    var jobList = AssignedJobs.ToList();
-                    jobList.Add(jobId);
-                    AssignedJobs = jobList.ToArray();
-
-                    TotalHours += hours;
-
-                    outcome = $"Job {jobId} assigned to {Name}.";
-                    return outcome;
-                }
-
-                return outcome;
-            }
-            catch (Exception ex)
-            {
-                return $"An error occurred: {ex.Message}";
-            }
-        }
-
-        public void CompleteJob(int jobId)
-        {
-            try
-            {
-                AssignedJobs = AssignedJobs.Where(job => job != jobId).ToArray();
-                var completedList = CompletedJobs.ToList();
-                completedList.Add(jobId);
-                CompletedJobs = completedList.ToArray();
-            }
-            catch { }
-        }
-
-        public override string ToString()
-        {
-            return $"{Name}'s Assigned Jobs: {string.Join(", ", AssignedJobs)}\n";
-        }
-
-        public void RemoveAssignedJob(int jobId)
-        {
-            try
-            {
-                AssignedJobs = AssignedJobs.Where(job => job != jobId).ToArray();
-            }
-            catch { }
-        }
+        public ICollection<MechanicAssignment> MechanicAssignments { get; set; }
+            = new List<MechanicAssignment>();
     }
 }
