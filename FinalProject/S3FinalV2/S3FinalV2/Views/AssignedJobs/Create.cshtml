@@ -1,5 +1,4 @@
 ﻿@model S3FinalV2.Models.AssignedJobs
-
 @{
     ViewData["Title"] = "Create Assigned Job";
     Layout = "_Layout";
@@ -7,25 +6,38 @@
 
 <h2>Create Assigned Job</h2>
 
-<form asp-action="Create" method="post">
+<form asp-controller="AssignedJobs" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
     <div class="mb-3">
         <label asp-for="CustomerId" class="form-label">Customer</label>
-        <select asp-for="CustomerId"
-                class="form-select"
-                asp-items="@(new SelectList(ViewBag.Customers, "CustomerId", "Name"))">
+        <select asp-for="CustomerId" class="form-select"
+                asp-items="@(ViewBag.Customers as SelectList)">
+            <option value="">-- Select a customer --</option>
         </select>
+        <span asp-validation-for="CustomerId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="JobsId" class="form-label">Job Type</label>
-        <select asp-for="JobsId"
-                class="form-select"
-                asp-items="@(new SelectList(ViewBag.Jobs, "JobId", "Name"))">
+        <select asp-for="JobsId" class="form-select"
+                asp-items="@(ViewBag.Jobs as SelectList)">
+            <option value="">-- Select a job --</option>
         </select>
+        <span asp-validation-for="JobsId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Priority" class="form-label">Priority</label>
+        <input asp-for="Priority" class="form-control" />
+        <span asp-validation-for="Priority" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

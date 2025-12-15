@@ -1,0 +1,28 @@
+@model S3FinalV2.Models.AssignedJobs
+
+@{
+    ViewData["Title"] = "Complete Job";
+    Layout = "_Layout";
+}
+
+<h2>Complete Job</h2>
+
+<div class="card p-3">
+    <h4>Job: @Model.Jobs?.Name</h4>
+    <p><strong>Customer:</strong> @Model.Customer?.Name</p>
+    <p><strong>Estimated hours:</strong> @Model.EstimatedHours</p>
+    <p><strong>Assigned provisional hours:</strong> @ViewData["AssignedHours"]</p>
+
+    <form asp-action="CompleteConfirmed" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.AssignedJobId" />
+
+        <div class="mb-3">
+            <label for="actualHours" class="form-label">Actual Hours</label>
+            <input step="0.01" min="0" type="number" name="actualHours" id="actualHours" class="form-control" value="@Model.ActualHours ?? (ViewData[" AssignedHours"] ?? Model.EstimatedHours)" required />
+        </div>
+
+        <button type="submit" class="btn btn-success">Mark Complete</button>
+        <a asp-action="Details" asp-route-id="@Model.AssignedJobId" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
