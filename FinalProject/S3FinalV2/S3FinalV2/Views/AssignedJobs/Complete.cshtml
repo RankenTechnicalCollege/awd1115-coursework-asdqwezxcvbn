@@ -1,0 +1,114 @@
+﻿@model S3FinalV2.Models.AssignedJobs
+
+@{
+    ViewData["Title"] = "Complete Job";
+    Layout = "_Layout";
+    // URL to redirect to after successful submit
+    var indexUrl = Url.Action("Index", "AssignedJobs");
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Complete Job</h5>
+                </div>
+                <div class="card-body">
+                    <form id="completeForm" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="AssignedJobId" />
+
+                        <div class="alert alert-info">
+                            <strong>@Model.Jobs?.Name</strong> - for <strong>@Model.Customer?.Name</strong>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ActualHours" class="form-label">Actual Hours Spent</label>
+                            <input type="number" asp-for="ActualHours" class="form-control" step="0.5" placeholder="Enter actual hours" />
+                            <span asp-validation-for="ActualHours" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <p><strong>Estimated Hours:</strong> @Model.EstimatedHours</p>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="MyJobs" class="btn btn-secondary">Cancel</a>
+                            <!-- use a JS-driven submit so we can redirect client-side after success -->
+                            <button type="button" id="submitBtn" class="btn btn-success">Confirm Completion</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        (function () {
+            var form = document.getElementById('completeForm');
+            var btn = document.getElementById('submitBtn');
+            var redirectUrl = '@indexUrl';
+
+            function getRequestVerificationToken() {
+                var tokenInput = form.querySelector('input[name="__RequestVerificationToken"]');
+                return tokenInput ? tokenInput.value : '';
+            }
+
+            btn.addEventListener('click', function () {
+                // let client-side validation run
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                var formData = new FormData(form);
+
+                fetch(form.action || window.location.href, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': getRequestVerificationToken()
+                    }
+                })
+                .then(function (response) {
+                    if (response.redirected) {
+                        // If server issues a redirect, follow it
+                        window.location.href = response.url;
+                        return;
+                    }
+
+                    if (response.ok) {
+                        // Successful response - navigate to index
+                        window.location.href = redirectUrl;
+                        return;
+                    }
+
+                    // Non-success: attempt to show returned HTML (e.g., validation errors)
+                    return response.text().then(function (html) {
+                        // Replace the card-body with returned content to display validation messages
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(html, 'text/html');
+                        var newBody = doc.querySelector('.card-body') || doc.body;
+                        var target = document.querySelector('.card-body');
+                        if (newBody && target) {
+                            target.innerHTML = newBody.innerHTML;
+                        } else {
+                            // fallback: show simple error
+                            alert('Failed to submit. Please check input and try again.');
+                        }
+                    });
+                })
+                .catch(function (err) {
+                    console.error(err);
+                    alert('An error occurred while submitting the form.');
+                });
+            });
+        })();
+    </script>
+}

@@ -19,14 +19,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MechTrack</title>
 
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome (free) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
-<body style="font-family:'Inter', sans-serif;">
-
+<body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark site-navbar mb-3">
             <div class="container-fluid">
 
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
@@ -47,22 +51,16 @@
                         <li class="nav-item">
                             <a class="nav-link @(controller == "Home" && action == "Index" ? "active" : "")"
                                asp-controller="Home" asp-action="Index">
-                                Home
+                                <i class="fa-solid fa-house me-1" aria-hidden="true"></i> Home
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link @(controller == "Home" && action == "About" ? "active" : "")"
-                               asp-controller="Home" asp-action="About">
-                                About
-                            </a>
-                        </li>
                         @if (isAuth && User.IsInRole("Mechanic"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link @(controller == "AssignedJobs" ? "active" : "")"
                                    asp-controller="AssignedJobs" asp-action="Index">
-                                    Assigned Jobs
+                                    <i class="fa-solid fa-list-check me-1" aria-hidden="true"></i> Assigned Jobs
                                 </a>
                             </li>
                         }
@@ -71,7 +69,7 @@
                             <li class="nav-item">
                                 <a class="nav-link @(controller == "Customer" ? "active" : "")"
                                    asp-controller="Customer" asp-action="Orders">
-                                    My Orders
+                                    <i class="fa-solid fa-box-open me-1" aria-hidden="true"></i> My Orders
                                 </a>
                             </li>
                         }
@@ -81,7 +79,7 @@
                                 <a class="nav-link dropdown-toggle @(area == "Admin" ? "active" : "")"
                                    role="button"
                                    data-bs-toggle="dropdown">
-                                    Admin
+                                    <i class="fa-solid fa-user-shield me-1" aria-hidden="true"></i> Admin
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -121,7 +119,7 @@
         </main>
     </div>
 
-    <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <footer class="site-footer">
         &copy; @year - MechTrack
     </footer>
 

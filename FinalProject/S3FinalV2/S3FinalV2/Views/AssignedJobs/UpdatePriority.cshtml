@@ -1,0 +1,56 @@
+﻿@model S3FinalV2.Models.AssignedJobs
+
+@{
+    ViewData["Title"] = "Update Priority";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Update Job Priority</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="AssignedJobs" asp-action="UpdatePriority" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" asp-for="AssignedJobId" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="alert alert-info">
+                            <strong>@Model.Jobs?.Name</strong> - for <strong>@Model.Customer?.Name</strong>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Priority" class="form-label">Priority Level</label>
+                            <select asp-for="Priority" class="form-select" aria-label="Priority Level">
+                                <option value="">-- Select Priority --</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                            <span asp-validation-for="Priority" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <p><strong>Current Priority:</strong> <span class="badge bg-warning">@Model.Priority</span></p>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-controller="AssignedJobs" asp-action="MyJobs" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-warning">Update Priority</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

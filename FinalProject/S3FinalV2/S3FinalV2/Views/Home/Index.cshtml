@@ -8,6 +8,14 @@
         <p class="lead">A mechanic scheduling and job tracking app built to simplify shop management.</p>
         <hr />
 
+        <!-- session-based visit counter -->
+        @if (ViewBag.VisitCount != null)
+        {
+            <div class="alert alert-info">
+                You have visited this site <strong>@ViewBag.VisitCount</strong> time(s) this session.
+            </div>
+        }
+
         <div class="container">
             <div class="row align-items-start">
                 <div class="col-7">

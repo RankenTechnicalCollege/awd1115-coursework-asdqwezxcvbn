@@ -12,8 +12,8 @@ using S3FinalV2.Data;
 namespace S3FinalV2.Migrations
 {
     [DbContext(typeof(MechTrackDbContext))]
-    [Migration("20251215000201_MakeCustomerPhoneNullable")]
-    partial class MakeCustomerPhoneNullable
+    [Migration("20251215024543_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -302,7 +302,6 @@ namespace S3FinalV2.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")

@@ -1,61 +1,79 @@
 ﻿@model S3FinalV2.Models.AssignedJobs
 
 @{
-    ViewData["Title"] = "Order Details";
+    ViewData["Title"] = "Job Details";
+    Layout = "_Layout";
 }
 
-<h2>Order Details</h2>
+<div class="container mt-4">
+    <h2>Job Details</h2>
 
-<div class="card p-3">
-    <h4>@Model.Jobs?.Name</h4>
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Job Information</h5>
+                    <p><strong>ID:</strong> @Model.AssignedJobId</p>
+                    <p><strong>Job Name:</strong> @Model.Jobs?.Name</p>
+                    <p><strong>Customer:</strong> @Model.Customer?.Name</p>
+                    <p><strong>Priority:</strong> <span class="badge bg-warning">@Model.Priority</span></p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Time Information</h5>
+                    <p><strong>Created Date:</strong> @Model.CreatedDate.ToString("g")</p>
+                    <p><strong>Estimated Hours:</strong> @Model.EstimatedHours</p>
+                    <p><strong>Actual Hours:</strong> @(Model.ActualHours?.ToString() ?? "Not set")</p>
+                    <p><strong>Status:</strong> @(Model.IsCompleted ? "Completed" : "In Progress")</p>
+                </div>
+            </div>
 
-    <p>
-        <strong>Vehicle:</strong>
-        @Model.Customer?.VehicleInfo
-    </p>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h5>Job Description</h5>
+                    <p>@Model.Jobs?.Description</p>
+                </div>
+            </div>
 
-    <p>
-        <strong>Description:</strong>
-        @Model.Jobs?.Description
-    </p>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h5>Assigned Mechanics</h5>
+                    @if (Model.MechanicAssignments != null && Model.MechanicAssignments.Any())
+                    {
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Mechanic Name</th>
+                                    <th>Assigned Hours</th>
+                                    <th>Actual Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ma in Model.MechanicAssignments)
+                                {
+                                    <tr>
+                                        <td>@ma.Mechanic?.Name</td>
+                                        <td>@ma.AssignedHours</td>
+                                        <td>@ma.ActualHours</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No mechanics assigned yet.</p>
+                    }
+                </div>
+            </div>
 
-    <p>
-        <strong>Priority:</strong>
-        @Model.Jobs?.Priority
-    </p>
-
-    <p>
-        <strong>Status:</strong>
-        @if (Model.MechanicAssignments != null && Model.MechanicAssignments.Any())
-        {
-            <span class="badge bg-info">Assigned</span>
-        }
-        else
-        {
-            <span class="badge bg-warning">Waiting for Assignment</span>
-        }
-    </p>
-
-    <h5 class="mt-3">Assigned Mechanics</h5>
-
-    @if (Model.MechanicAssignments != null && Model.MechanicAssignments.Any())
-    {
-        <ul>
-            @foreach (var ma in Model.MechanicAssignments)
-            {
-                <li>
-                    @ma.Mechanic?.Name
-                    (Skill Level: @ma.Mechanic?.SkillLevel)
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p class="text-muted">No mechanics assigned yet.</p>
-    }
-
-    <a asp-action="Orders" class="btn btn-secondary mt-3">
-        Back to Orders
-    </a>
+            <div class="mt-4">
+                <a asp-action="Index" asp-controller="AssignedJobs" class="btn btn-secondary">Back</a>
+                @if (!Model.IsCompleted)
+                {
+                    <a asp-action="UpdatePriority" asp-route-id="@Model.AssignedJobId" class="btn btn-warning">Update Priority</a>
+                    <a asp-action="Complete" asp-route-id="@Model.AssignedJobId" class="btn btn-success">Complete Job</a>
+                }
+            </div>
+        </div>
+    </div>
 </div>

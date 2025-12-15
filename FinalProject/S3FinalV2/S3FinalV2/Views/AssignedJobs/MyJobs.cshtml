@@ -1,0 +1,63 @@
+﻿@model IEnumerable<S3FinalV2.Models.AssignedJobs>
+
+@{
+    ViewData["Title"] = "My Jobs";
+    Layout = "_Layout";
+}
+
+<h2>My Assigned Jobs</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Job</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Mechanics</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.AssignedJobId</td>
+                <td>@a.Jobs?.Name</td>
+                <td>@a.Customer?.Name</td>
+
+                <td>
+                    @(a.MechanicAssignments != null && a.MechanicAssignments.Any()
+                                    ? "Assigned"
+                                    : "Pending")
+                </td>
+
+                <td>
+                    @if (a.MechanicAssignments != null && a.MechanicAssignments.Any())
+                    {
+                        foreach (var ma in a.MechanicAssignments)
+                        {
+                            <span class="badge bg-secondary">
+                                @ma.Mechanic?.Name
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">None</span>
+                    }
+                </td>
+
+                <td>
+                    <a asp-action="Details" asp-route-id="@a.AssignedJobId" class="btn btn-sm btn-info">View</a>
+                    @if (!a.IsCompleted)
+                    {
+                        <a asp-action="Complete" asp-route-id="@a.AssignedJobId" class="btn btn-sm btn-success">Complete</a>
+                        <a asp-action="UpdatePriority" asp-route-id="@a.AssignedJobId" class="btn btn-sm btn-warning">Priority</a>
+                        <a asp-action="Delete" asp-route-id="@a.AssignedJobId" class="btn btn-sm btn-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -81,64 +81,73 @@ namespace S3FinalV2.Controllers
                 _context.AssignedJobs.Add(model);
                 await _context.SaveChangesAsync();
 
-                // Step 2: Load mechanics with current assignments
-                var mechanics = await _context.Mechanics
-                    .Include(m => m.MechanicAssignments)
-                    .ToListAsync();
-
-                Mechanics? chosenMechanic = null;
-
-                foreach (var mech in mechanics)
-                {
-                    float currentAssignedHours = mech.MechanicAssignments.Sum(ma => ma.AssignedHours);
-                    float availableHours = mech.HourlyLimitPerWeek - (mech.TotalHoursWorked + currentAssignedHours);
-
-                    if (mech.SkillLevel >= jobTemplate.SkillLevel && availableHours >= estHours)
-                    {
-                        if (chosenMechanic == null ||
-                            (mech.TotalHoursWorked + currentAssignedHours) <
-                            (chosenMechanic.TotalHoursWorked + chosenMechanic.MechanicAssignments.Sum(ma => ma.AssignedHours)))
-                        {
-                            chosenMechanic = mech;
-                        }
-                    }
-                }
-
-                // Step 3: Assign mechanic if available
-                if (chosenMechanic != null)
-                {
-                    var mechAssign = new MechanicAssignment
-                    {
-                        MechanicId = chosenMechanic.MechanicId,
-                        AssignedJobId = model.AssignedJobId,
-                        AssignedHours = estHours,
-                        ActualHours = 0f
-                    };
-
-                    _context.MechanicAssignments.Add(mechAssign);
-
-                    chosenMechanic.TotalHoursWorked += estHours;
-                    _context.Mechanics.Update(chosenMechanic);
-
-                    await _context.SaveChangesAsync();
-
-                    Console.WriteLine($"Job {model.AssignedJobId} assigned to mechanic {chosenMechanic.Name}");
-                }
-                else
-                {
-                    TempData["AssignmentNotice"] = "No mechanic available for assignment.";
-                    Console.WriteLine($"Job {model.AssignedJobId} could not be assigned to any mechanic.");
-                }
+                // Step 2: Attempt automatic mechanic assignment
+                await AssignMechanicToJobAsync(model, jobTemplate, estHours);
 
                 await transaction.CommitAsync();
             }
-            catch
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                Console.WriteLine($"Error creating assigned job: {ex.Message}");
                 throw;
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task AssignMechanicToJobAsync(AssignedJobs assignedJob, Jobs jobTemplate, float estHours)
+        {
+            var mechanics = await _context.Mechanics
+                .Include(m => m.MechanicAssignments)
+                .ToListAsync();
+
+            Console.WriteLine($"[DEBUG] Total mechanics found: {mechanics.Count}");
+            foreach (var m in mechanics)
+            {
+                Console.WriteLine($"[DEBUG] Mechanic: {m.Name}, SkillLevel: {m.SkillLevel}, HourlyLimitPerWeek: {m.HourlyLimitPerWeek}, TotalHoursWorked: {m.TotalHoursWorked}");
+            }
+
+            var chosenMechanic = mechanics
+                .Where(m =>
+                {
+                    bool skillMatch = m.SkillLevel >= jobTemplate.SkillLevel;
+                    float availableHours = m.HourlyLimitPerWeek - m.TotalHoursWorked;
+                    bool hoursMatch = availableHours >= estHours;
+                    Console.WriteLine($"[DEBUG] Evaluating {m.Name}: SkillMatch={skillMatch}, AvailableHours={availableHours}, HoursMatch={hoursMatch}");
+                    return skillMatch && hoursMatch;
+                })
+                .OrderBy(m => m.TotalHoursWorked)
+                .ThenBy(m => m.MechanicId)
+                .FirstOrDefault();
+
+            if (chosenMechanic != null)
+            {
+                var mechAssign = new MechanicAssignment
+                {
+                    MechanicId = chosenMechanic.MechanicId,
+                    AssignedJobId = assignedJob.AssignedJobId,
+                    AssignedHours = estHours,
+                    ActualHours = 0f
+                };
+
+                _context.MechanicAssignments.Add(mechAssign);
+
+                var mechToUpdate = await _context.Mechanics.FindAsync(chosenMechanic.MechanicId);
+                if (mechToUpdate != null)
+                {
+                    mechToUpdate.TotalHoursWorked += estHours;
+                    _context.Mechanics.Update(mechToUpdate);
+                }
+
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Job {assignedJob.AssignedJobId} assigned to mechanic {chosenMechanic.Name}");
+            }
+            else
+            {
+                TempData["AssignmentNotice"] = "No mechanic available for assignment.";
+                Console.WriteLine($"Job {assignedJob.AssignedJobId} could not be assigned. Required skill: {jobTemplate.SkillLevel}, Required hours: {estHours}");
+            }
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -158,9 +167,31 @@ namespace S3FinalV2.Controllers
 
             if (assigned == null) return NotFound();
 
-            _context.MechanicAssignments.RemoveRange(assigned.MechanicAssignments);
-            _context.AssignedJobs.Remove(assigned);
-            await _context.SaveChangesAsync();
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var mechAssign in assigned.MechanicAssignments)
+                {
+                    var mech = await _context.Mechanics.FindAsync(mechAssign.MechanicId);
+                    if (mech != null)
+                    {
+                        mech.TotalHoursWorked -= mechAssign.AssignedHours;
+                        if (mech.TotalHoursWorked < 0) mech.TotalHoursWorked = 0;
+                        _context.Mechanics.Update(mech);
+                    }
+                }
+
+                _context.MechanicAssignments.RemoveRange(assigned.MechanicAssignments);
+                _context.AssignedJobs.Remove(assigned);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -180,7 +211,8 @@ namespace S3FinalV2.Controllers
             return View(assigned);
         }
 
-        [HttpPost]
+        // Map POSTs that post to action "Complete" (common in Razor forms) to this handler.
+        [HttpPost, ActionName("Complete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CompleteConfirmed(int id, float actualHours)
         {
@@ -195,23 +227,31 @@ namespace S3FinalV2.Controllers
             assigned.ActualHours = actualHours;
             _context.AssignedJobs.Update(assigned);
 
-            var mechAssign = assigned.MechanicAssignments?.FirstOrDefault();
-            if (mechAssign != null)
+            var mechAssigns = assigned.MechanicAssignments?.ToList() ?? new List<MechanicAssignment>();
+            float totalAssigned = mechAssigns.Sum(ma => ma.AssignedHours);
+
+            foreach (var mechAssign in mechAssigns)
             {
-                mechAssign.ActualHours = actualHours;
+                // Distribute actual hours proportionally based on assigned hours
+                float proportion = totalAssigned > 0f ? (mechAssign.AssignedHours / totalAssigned) : 0f;
+                float mechActual = actualHours * proportion;
+
+                mechAssign.ActualHours = mechActual;
                 _context.MechanicAssignments.Update(mechAssign);
 
                 var mech = await _context.Mechanics.FindAsync(mechAssign.MechanicId);
                 if (mech != null)
                 {
-                    mech.TotalHoursWorked = mech.TotalHoursWorked - mechAssign.AssignedHours + actualHours;
+                    mech.TotalHoursWorked = mech.TotalHoursWorked - mechAssign.AssignedHours + mechActual;
                     if (mech.TotalHoursWorked < 0) mech.TotalHoursWorked = 0;
                     _context.Mechanics.Update(mech);
                 }
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new { id });
+
+            // Return to Index as requested
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> UpdatePriority(int id)
@@ -223,18 +263,31 @@ namespace S3FinalV2.Controllers
             return View(assigned);
         }
 
-        [HttpPost]
+        // Map POSTs that post to action "UpdatePriority" (common in Razor forms) to this handler.
+        [HttpPost, ActionName("UpdatePriority")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePriorityConfirmed(int id, string priority)
         {
-            var assigned = await _context.AssignedJobs.FindAsync(id);
+            var assigned = await _context.AssignedJobs
+                .Include(a => a.Jobs)
+                .FirstOrDefaultAsync(a => a.AssignedJobId == id);
+
             if (assigned == null) return NotFound();
 
             assigned.Priority = priority;
             _context.AssignedJobs.Update(assigned);
+
+            // Also update the job template priority to keep in sync (if present)
+            if (assigned.Jobs != null)
+            {
+                assigned.Jobs.Priority = priority;
+                _context.Jobs.Update(assigned.Jobs);
+            }
+
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Details), new { id });
+            // Return to Index as requested
+            return RedirectToAction(nameof(Index));
         }
     }
 }

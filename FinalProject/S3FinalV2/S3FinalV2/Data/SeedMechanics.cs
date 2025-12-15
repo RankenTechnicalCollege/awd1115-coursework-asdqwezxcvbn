@@ -77,7 +77,8 @@ public static class SeedMechanics
                 {
                     Name = name,
                     SkillLevel = skillLevel,
-                    UserId = userId
+                    UserId = userId,
+                    HourlyLimitPerWeek = 40
                 });
             }
         }

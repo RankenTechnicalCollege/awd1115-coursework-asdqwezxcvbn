@@ -15,6 +15,11 @@ namespace S3FinalV2.Controllers
 
         public IActionResult Index()
         {
+            int visits = HttpContext.Session.GetInt32("VisitCount") ?? 0;
+            visits++;
+            HttpContext.Session.SetInt32("VisitCount", visits);
+            ViewBag.VisitCount = visits;
+
             return View();
         }
 
